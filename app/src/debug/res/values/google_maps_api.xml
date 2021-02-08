@@ -2,10 +2,6 @@
     <!--
     TODO: Before you run your application, you need a Google Maps API key.
 
-    To get one, follow this link, follow the directions and press "Create" at the end:
-
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=37:5D:14:20:C7:6D:77:F3:20:53:57:03:49:B4:E7:FF:BE:AB:20:1A%3Bcom.example.stmucampusnavigatorapp
-
     You can also add your credentials to an existing key, using these values:
 
     Package name:
