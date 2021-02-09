@@ -33,7 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private EditText campusSearchBar;   // Search bar text field
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState) //test comment
     {
         // Setting up map screen
         super.onCreate(savedInstanceState);
