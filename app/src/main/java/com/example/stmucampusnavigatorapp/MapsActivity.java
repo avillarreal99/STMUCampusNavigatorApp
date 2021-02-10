@@ -35,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) // test
+    protected void onCreate(Bundle savedInstanceState) // test for amanda
     {
         // Setting up map screen
         super.onCreate(savedInstanceState);
