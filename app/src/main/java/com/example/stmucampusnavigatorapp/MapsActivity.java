@@ -28,12 +28,14 @@ import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
-    // WIDGETS
+    // WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map
     private EditText campusSearchBar;   // Search bar text field
+    public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) //test comment
+    protected void onCreate(Bundle savedInstanceState) // test
     {
         // Setting up map screen
         super.onCreate(savedInstanceState);
@@ -65,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /*
-    private void initializeSearchBar()
+    private void initializeSearchBar()   // ignore until we start search functionality
     {
         campusSearchBar.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
