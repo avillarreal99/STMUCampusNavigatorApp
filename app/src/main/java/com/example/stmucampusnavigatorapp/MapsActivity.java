@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         campusSearchBar = (EditText) findViewById(R.id.stmu_search);
     }
 
-    // Moves map to users location
+    // Moves map to users location by Natalie
     public void centerMapOnLocation(Location location, String title){
 
         LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,12));
     }
 
-    // Requests location permissions and calls centerMapOnLocation if permission is granted
+    // Requests location permissions and calls centerMapOnLocation if permission is granted by Natalie
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -189,7 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     */
 
-    // When recenter button is pressed, user location will be obtained
+    // When recenter button is pressed, user location will be obtained by Natalie
     private void initalizeRecenterbutton(Location lastKnownLocation) {
         Button recenterButton = (Button) findViewById(R.id.recenterButton);
         recenterButton.setOnClickListener(new View.OnClickListener() {
