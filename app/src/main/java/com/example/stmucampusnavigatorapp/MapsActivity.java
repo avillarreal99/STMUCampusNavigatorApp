@@ -1,28 +1,24 @@
 // St. Mary's Campus Navigator
 // STMUCampusNavigatorApp.app
 // Created Jan 12, 2021
-// Last Updated Feb 2, 2021
+// Last Updated Feb 21, 2021
 // Version 1
 // Project Team: Amanda Villarreal, Alex Montes, Natalie Rankin, Darren Griffin, Joe Flores, and Dat Trinh
 // ------------------------------------------------------------------------------------------------------------------
 
 // IMPORTS AND PACKAGES (DO NOT DELETE)
 package com.example.stmucampusnavigatorapp;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,10 +26,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.stmucampusnavigatorapp.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,24 +34,26 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-    // for getting user location
-    LocationManager locationManager;
-    LocationListener locationListener;
-    private boolean permissionGranted = false;
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
+{
 
-    // WIDGETS
+
+    // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map
     private EditText campusSearchBar;   // Search bar text field
+    public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();
+    LocationManager locationManager;    // for getting user location
+    LocationListener locationListener;  // for getting user location
+    private boolean permissionGranted = false;   // for determining user allowing location permissions
+
+    // MAP SCREEN FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) // test
+    protected void onCreate(Bundle savedInstanceState)
     {
         // Setting up map screen
         super.onCreate(savedInstanceState);
@@ -69,35 +64,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // XML setup
         campusSearchBar = (EditText) findViewById(R.id.stmu_search);
+
     }
 
-    // Moves map to users location by Natalie
-    public void centerMapOnLocation(Location location, String title){
-
-        LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
-        stmuMap.clear();
-        stmuMap.addMarker(new MarkerOptions().position(userLocation).title(title));
-        stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,12));
-    }
-
-    // Requests location permissions and calls centerMapOnLocation if permission is granted by Natalie
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // If permission granted
-        if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-            // Make sure that PERMISSION_GRANTED is true before we ACCESS_FINE_LOCATION
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-
-                // Store location
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                centerMapOnLocation(lastKnownLocation,"User Location");
-            }
-        }
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap)  // after Map is set up from onCreate()
@@ -127,25 +96,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // These methods are required for LocationListener()
                 // We don't use them because we have to get user location permission
                 @Override
-                public void onLocationChanged(Location location)
-                {
-
-                }
+                public void onLocationChanged(Location location){}
                 @Override
-                public void onStatusChanged(String s, int i, Bundle bundle)
-                {
-
-                }
+                public void onStatusChanged(String s, int i, Bundle bundle){}
                 @Override
-                public void onProviderEnabled(String s)
-                {
-
-                }
+                public void onProviderEnabled(String s){}
                 @Override
-                public void onProviderDisabled(String s)
-                {
-
-                }
+                public void onProviderDisabled(String s){}
             };
 
             // Location permissions granted then obtain location and send to initalizeRecenterbutton
@@ -156,16 +113,68 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 permissionGranted = true;
                 initalizeRecenterbutton(lastKnownLocation);
             }
-            else {
+            else
+            {
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
                 permissionGranted = false;
             }
-
         }
     }
 
+    // RECENTER BUTTON FUNCTIONS-------------------------------------------------------------------------------------------------------------------------
+
+    // When recenter button is pressed, user location will be obtained (by Natalie)
+    private void initalizeRecenterbutton(Location lastKnownLocation)
+    {
+        Button recenterButton = (Button) findViewById(R.id.recenterButton);
+        recenterButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if (permissionGranted) // If user allows location permissions, get location
+                {
+                    centerMapOnLocation(lastKnownLocation,"User Location");
+                }
+                else {
+                    System.out.println("Location permissions must be enabled\n");
+                }
+            }
+        });
+    }
+
+    // Moves map to users location (by Natalie)
+    public void centerMapOnLocation(Location location, String title)
+    {
+        LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
+        stmuMap.clear();
+        stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!"));
+        stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,20f));
+    }
+
+    // Requests location permissions and calls centerMapOnLocation if permission is granted (by Natalie)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // If permission granted
+        if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+            // Make sure that PERMISSION_GRANTED is true before we ACCESS_FINE_LOCATION
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+
+                // Store location
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                centerMapOnLocation(lastKnownLocation,"User Location");
+            }
+        }
+    }
+
+    // SEARCH BAR FUNCTIONS -----------------------------------------------------------------------------------------------------------------------------
+
     /*
-    private void initializeSearchBar()
+    private void initializeSearchBar()   // ignore until we start search functionality
     {
         campusSearchBar.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
@@ -188,21 +197,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String searchBarString = campusSearchBar.getText().toString();
     }
     */
-
-    // When recenter button is pressed, user location will be obtained by Natalie
-    private void initalizeRecenterbutton(Location lastKnownLocation) {
-        Button recenterButton = (Button) findViewById(R.id.recenterButton);
-        recenterButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (permissionGranted) // If user allows location permissions, get location
-                {
-                    centerMapOnLocation(lastKnownLocation,"User Location");
-                }
-                else {
-                    System.out.println("Location permissions must be enabled\n");
-                }
-            }
-        });
-    }
-
 }

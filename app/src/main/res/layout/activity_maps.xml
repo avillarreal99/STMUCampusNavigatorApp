@@ -1,67 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    // xml of main activity holding the google map fragment
-
-
-    // xml design for recenter button
-
-    <fragment
+    // GOOGLE MAP FRAGMENT
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginRight="-2dp"
-        android:layout_marginBottom="0dp"
         tools:context=".MapsActivity" />
 
-    //xml design for search bar
-
-    <RelativeLayout
-        android:id="@+id/relLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-
-        <Button
-            android:id="@+id/recenterButton"
-            android:layout_width="69dp"
-            android:layout_height="74dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="13dp"
-            android:layout_marginRight="13dp"
-            android:layout_marginBottom="153dp"
-            android:background="#00FFFFFF"
-            android:visibility="visible"
-            app:backgroundTint="#00FFFFFF"
-            app:icon="@color/white"
-            app:iconPadding="20dp"
-            app:iconTint="#FA0202" />
-
-        <ImageView
-            android:id="@+id/ic_reCenterButton"
-            android:layout_width="76dp"
-            android:layout_height="67dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="156dp"
-            android:src="@drawable/ic_baseline_gps_fixed_24" />
-
-
-    </RelativeLayout>
-
+    //SEARCH BAR
     <RelativeLayout
         android:id="@+id/relLayout1"
         android:layout_width="296dp"
@@ -78,8 +31,9 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:contentDescription="A search icon"
             android:src="@drawable/ic_magnify" />
-        // ic_magnify is a custom drawable (search icon)
+
 
         <EditText
             android:id="@+id/stmu_search"
@@ -87,19 +41,25 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/ic_magnify"
+            android:autoText="false"
             android:background="@null"
             android:hint="  Search for a campus location..."
             android:imeOptions="actionSearch"
+            android:inputType="text"
             android:textColor="#000"
             android:textSize="15sp" />
 
+
+    // UPD BUTTON
     </RelativeLayout>
+
     <Button
         android:id="@+id/UPD"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="0dp"
@@ -107,6 +67,48 @@
         android:backgroundTint="#15317E"
         android:text="UPD"
         android:textColor="#FFD700"
-        android:layout_alignParentRight="true" />
+        android:textSize="18sp" />
+
+    // RECENTER BUTTON
+    <RelativeLayout
+        android:id="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
+
+        <Button
+            android:id="@+id/recenterButton"
+            android:layout_width="67dp"
+            android:layout_height="70dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginBottom="157dp"
+            android:background="#00FFFFFF"
+            android:visibility="visible"
+            app:backgroundTint="#00FFFFFF"
+            app:icon="@color/white"
+            app:iconPadding="20dp"
+            app:iconTint="#FA0202" />
+
+        <ImageView
+            android:id="@+id/ic_reCenterButton"
+            android:layout_width="68dp"
+            android:layout_height="69dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="156dp"
+            android:contentDescription="A recenter icon"
+            android:src="@drawable/ic_baseline_gps_fixed_24" />
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

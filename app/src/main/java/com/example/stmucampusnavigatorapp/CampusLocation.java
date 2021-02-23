@@ -1,3 +1,6 @@
+// CampusLocation.java
+// Class for holding the data of each campus location
+
 package com.example.stmucampusnavigatorapp;
 
 public class CampusLocation
@@ -6,7 +9,7 @@ public class CampusLocation
     private float longitude;
     private float latitude;
     private String category;
-    private int phoneNumber;
+    private int phoneNumber; // 0 for NULL (No phone number available)
 
     public CampusLocation(String locationName, float longitudeCoord, float latitudeCoord, String locationCategory, int locationPhoneNum)
     {
@@ -39,3 +42,7 @@ public class CampusLocation
 
     public int getPhoneNumber(){return phoneNumber;}
 }
+
+
+
+
