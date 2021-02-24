@@ -45,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map
     private EditText campusSearchBar;   // Search bar text field
-    public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();
+    public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     LocationManager locationManager;    // for getting user location
     LocationListener locationListener;  // for getting user location
     private boolean permissionGranted = false;   // for determining user allowing location permissions
