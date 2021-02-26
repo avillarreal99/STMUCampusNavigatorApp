@@ -43,7 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     // GLOBAL WIDGETS AND VARIABLES
-    private GoogleMap stmuMap;          // interactive map
+    private GoogleMap stmuMap;          // interactive map // test
     private EditText campusSearchBar;   // Search bar text field
     public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     LocationManager locationManager;    // for getting user location
