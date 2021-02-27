@@ -1,4 +1,5 @@
 // CampusLocation.java
+// By Darren Griffin
 // Class for holding the data of each campus location
 
 package com.example.stmucampusnavigatorapp;
@@ -6,12 +7,12 @@ package com.example.stmucampusnavigatorapp;
 public class CampusLocation
 {
     private String location;
-    private float longitude;
-    private float latitude;
+    private String longitude;
+    private String latitude;
     private String category;
-    private int phoneNumber; // 0 for NULL (No phone number available)
+    private String phoneNumber; // 0 for NULL (No phone number available)
 
-    public CampusLocation(String locationName, float longitudeCoord, float latitudeCoord, String locationCategory, int locationPhoneNum)
+    public CampusLocation(String locationName, String longitudeCoord, String latitudeCoord, String locationCategory, String locationPhoneNum)
     {
         location = locationName;
         longitude = longitudeCoord;
@@ -25,12 +26,12 @@ public class CampusLocation
         return location;
     }
 
-    public float getLongitude()
+    public String getLongitude()
     {
         return longitude;
     }
 
-    public float getLatitude()
+    public String getLatitude()
     {
         return latitude;
     }
@@ -40,7 +41,13 @@ public class CampusLocation
         return category;
     }
 
-    public int getPhoneNumber(){return phoneNumber;}
+    public String getPhoneNumber(){return phoneNumber;}
+
+    @Override
+    public String toString()
+    {
+        return this.getLocationName() + " " + this.getLongitude() + " " + this.getLatitude() + " " + this.getPhoneNumber() + " " + this.getCategory();
+    }
 }
 
 

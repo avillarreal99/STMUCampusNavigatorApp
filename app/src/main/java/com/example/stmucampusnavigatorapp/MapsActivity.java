@@ -34,13 +34,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
-
 
     // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map
@@ -50,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListener;  // for getting user location
     private boolean permissionGranted = false;   // for determining user allowing location permissions
 
-    // MAP SCREEN FUNCTIONS --------------------------------------------------------------------------------------------------------------------------------
+    // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,15 +70,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // XML setup
         campusSearchBar = (EditText) findViewById(R.id.stmu_search);
-
     }
 
 
     @Override
     public void onMapReady(GoogleMap googleMap)  // after Map is set up from onCreate()
     {
+        System.out.println("App is ready");
         // MAP SET UP
         stmuMap = googleMap;
+        initializeCampusLocationsList();
         //initializeSearchBar();
 
         // Limit the map screen to only display St. Mary's
@@ -121,7 +128,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // RECENTER BUTTON FUNCTIONS-------------------------------------------------------------------------------------------------------------------------
+    // SETTING UP CAMPUSLOCATIONS ARRAYLIST METHODS ---------------------------------------------------------------------------------------------------
+
+    public void initializeCampusLocationsList()
+    {
+        System.out.println("In initializeCampusLocationsList");   // for testing purposes
+
+        // read text from asset CampusLocations.txt and store in an object of CampusLocation; add each CampusLocation to campusLocationsList
+        try
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("CampusLocations.txt")));
+            String line;
+
+            while((line = br.readLine()) != null) // reads each line of the .txt file
+            {
+                String[] vals = line.split(";"); // stores each line of the .txt file into an array.
+                String a = vals[0];
+                String[] b = a.split(","); // splits each row into columns and sets each of the values.
+                String val0 = b[0];  // locationName
+                String val1 = b[1];  // longitude
+                String val2 = b[2];  // latitude
+                String val3 = b[3];  // category
+                String val4 = b[4];  // phoneNumber
+                CampusLocation campusLocationObj = new CampusLocation(val0, val1, val2, val3, val4); //Creates new object for each row of the .txt file
+                campusLocationsList.add(campusLocationObj); //stores all locations into an ArrayList.
+            }
+
+
+            // will be helpful for creating the Search function. Searching through the ArrayList to find details about a Location object would be similar.
+            String userInput = "Richter";
+
+            for(CampusLocation l : campusLocationsList)
+            {
+                if(l.getLocationName().contains(userInput))
+                {
+                    System.out.println(l.toString());
+                    /*
+                    System.out.println(l.getLocationName());
+                    System.out.println(l.getLongitude());
+                    System.out.println(l.getLatitude());
+                    System.out.println(l.getCategory());
+                    System.out.println("\n");
+
+                     */
+                }
+            }
+
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    // RECENTER BUTTON METHODS ------------------------------------------------------------------------------------------------------------------------
 
     // When recenter button is pressed, user location will be obtained (by Natalie)
     private void initalizeRecenterbutton(Location lastKnownLocation)
@@ -171,7 +236,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // SEARCH BAR FUNCTIONS -----------------------------------------------------------------------------------------------------------------------------
+    // SEARCH BAR METHODS -----------------------------------------------------------------------------------------------------------------------------
 
     /*
     private void initializeSearchBar()   // ignore until we start search functionality

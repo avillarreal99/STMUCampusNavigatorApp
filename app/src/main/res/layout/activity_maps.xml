@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    // GOOGLE MAP FRAGMENT
+    <!-- GOOGLE MAP FRAGMENT -->
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -14,8 +14,7 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity" />
 
-    //SEARCH BAR
-
+    <!-- SEARCH BAR -->
     <RelativeLayout
         android:id="@+id/relLayout1"
         android:layout_width="296dp"
@@ -57,7 +56,7 @@
             android:textSize="15sp" />
 
 
-        // UPD BUTTON
+     <!-- UPD BUTTON -->
     </RelativeLayout>
 
     <Button
@@ -76,7 +75,7 @@
         android:textColor="#FFD700"
         android:textSize="18sp" />
 
-    // RECENTER BUTTON
+    <!-- RECENTER BUTTON -->
     <RelativeLayout
         android:id="@+id/relLayout2"
         android:layout_width="match_parent"
@@ -114,7 +113,6 @@
             android:layout_marginBottom="156dp"
             android:contentDescription="A recenter icon"
             android:src="@drawable/ic_baseline_gps_fixed_24" />
-
 
     </RelativeLayout>
 

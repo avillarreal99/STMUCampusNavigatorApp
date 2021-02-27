@@ -1,0 +1,88 @@
+Starbucks,29.45302,-98.5629,2104312202,Food
+Chick-fil-a,29.45245,-98.56285,2104363750,Food
+Diamondback Cafe,29.45258,-98.56273,NULL,Food
+The POD,29.45363,-98.56201,NULL,Food
+Subway,29.45355,-9856212,2104363334,Food
+The Pub,29.45338,-98.56292,NULL,Food
+Charles L. Cotrell Learning Commons,29.45296,-98.56263,NULL,Library
+Louis J. Blume Library,29.45317,-98.56239,NULL,Library
+Sarita Kennedy East Law Library,29.45241,-98.56471,2104363435,Library
+Lot A,29.45342,-98.56081,NULL,Parking
+Lot B,29.45125,-98.56141,NULL,Parking
+Lot C,29.45496,-98.56437,NULL,Parking
+Lot D,29.4545,-98.56558,NULL,Parking
+Lot F,29.45262,-98.56786,NULL,Parking
+Lot G,29.44989,-98.5634,NULL,Parking
+Lot H,29.45179,-98.56591,NULL,Parking
+Lot I,29.45082,-98.56236,NULL,Parking
+Lot J,29.45171,-98.563,NULL,Parking
+Lot K,29.45181,-98.56763,NULL,Parking
+Lot L,29.4544,-98.56373,NULL,Parking
+Lot M,29.45087,-98.56773,NULL,Parking
+Lot N,29.45063,-98.56542,NULL,Parking
+Lot O,29.44952,-98.56737,NULL,Parking
+Lot Q,29.45086,-98.56599,NULL,Parking
+Lot R,29.44935,-98.56399,NULL,Parking
+Lot S,29.45189,-98.56102,NULL,Parking
+Lot T,29.45111,-98.56466,NULL,Parking
+Lot U,29.44961,-98.5625,NULL,Parking
+Lot V,29.45262,-98.56095,NULL,Parking
+Lot W,29.45069,-98.56439,NULL,Parking
+Lot X,29.4525,-98.56531,NULL,Parking
+Adele Hall,29.44978,-98.56702,2104316737,Residence
+Andrew Cremer Hall,29.44979,-98.56764,2104316737,Residence
+Anthony Frederick Hall,29.45051,-98.5662,2104316737,Residence
+Bordeaux Hall,29.44966,-98.56637,2104316737,Residence
+Chaminade Hall,29.45209,-98.56167,2104363478,Residence
+Dougherty Hall,29.44974,-98.56446,2104363936,Residence
+Founders Hall,29.44992,-98.56544,2104363909,Residence
+Herbert and John G. Leies Hall,29.45003,-98.56829,2104314312,Residence
+John Donohoo Hall,29.45052,-98.56685,2104316737,Residence
+Lourdes Hall,29.45039,-98.56532,2104363936,Residence
+Marian Hall,29.45106,-98.56277,2104312103,Residence
+Perigueux Hall,29.45066,-98.56788,2104316737,Residence
+Treadaway Hall,29.45499,-98.56301,2104313053,Residence
+Alumni Athletics & Convocation Center,29.45174,-98.56386,2104363528,Athletics
+Bill Greehey Arena,29.45144,-98.56434,2104363011,Athletics
+David C. Dickson Stadium,29.45287,-98.56707,2104314311,Athletics
+Flex Field,29.45163,-98.56688,NULL,Athletics
+Intramural Soccer Field,29.45281,-98.56572,NULL,Athletics
+Intramural Softball/Football Field,29.45406,-98.56679,NULL,Athletics
+Fitness Center,29.45182,-98.56357,2104315089,Athletics
+Rohrbach Stadium Tennis Complex,29.45181,-98.5648,NULL,Athletics
+Sigma Beta Chi Varsity Soccer Field,29.45504,-98.56776,NULL,Athletics
+Softball Stadium,29.45511,-98.56661,NULL,Athletics
+Assumption Chapel,29.45294,-98.56194,NULL,Sacred
+Guadalupe Chapel,29.45459,-98.56281,2104363545,Sacred
+Marianist Chapel,29.45459,-98.56116,NULL,Sacred
+Marianist Cemetery,29.45432,-98.56116,NULL,Sacred
+Casa Maria Marianist Residence,29.45063,-98.56339,NULL,Sacred
+Marianist Residence,29.45472,-98.56144,2104363245,Sacred
+University Ministry ,29.45355,-98.56315,2104363213,Sacred
+Albert B. Alkek Business Building,29.45278,-98.56364,NULL,Academics
+Charles Francis Hall,29.45157,-98.56166,NULL,Academics
+Ernest A. Raba Law Building,29.45342,-98.56412,NULL,Academics
+Garni Science Hall,29.45376,-98.56122,NULL,Academics
+Law Administration Building,29.45295,-98.56418,2104363840,Academics
+Law Classrooms Building,29.45311,-98.56473,NULL,Academics
+Moody Life Sciences Center,29.45406,-98.56163,NULL,Academics
+Reinbolt Hall,29.4529,-98.56164,NULL,Academics
+Richter Math-Engineering Center,29.45403,-98.56228,NULL,Academics
+School of Law Courtroom,29.4529,-98.5649,NULL,Academics
+St. Louis Hall,29.45304,-98.56127,NULL,Academics
+St. Mary's University Research Center,29.44931,-98.56234,NULL,Academics
+Treadaway Classrooms,29.45464,-98.56332,NULL,Academics
+AT&T Center for Information Technology,29.44992,-98.56277,NULL,Academics
+University Center,29.45252,-98.56288,NULL,Amenities
+Barnes & Noble Bookstore,29.45248,-98.56305,2104363406,Amenities
+Contreras Student Lounge,29.45316,-98.56294,NULL,Amenities
+Chaminde Tower,29.45234,-98.56136,NULL,Amenities
+University Police Department (UPD),29.45482,-98.5634,2104311911,Safety
+Student Health Center,29.45179,-98.56143,2104363506,Safety
+Student Counseling Center,29.4536,-98.56372,2104363135,Safety
+Barrett Memorial Bell Tower,29.45264,-98.56217,NULL,Gathering
+Contreras Family Terrace,29.45313,-98.56309,NULL,Gathering
+Alkek Plaza,29.45327,-98.56352,NULL,Gathering
+Alumni Pavilion,29.45409,-98.56311,NULL,Gathering
+The Quad,29.45322,-98.56178,NULL,Gathering
+St. Joseph's Circle,29.45383,-98.56497,NULL,Gathering
