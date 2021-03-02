@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -43,9 +44,10 @@
 
         <EditText
             android:id="@+id/stmu_search"
-            android:layout_width="261dp"
+            android:layout_width="251dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/ic_magnify"
             android:autoText="false"
             android:background="@null"
@@ -99,7 +101,8 @@
             app:backgroundTint="#00FFFFFF"
             app:icon="@color/white"
             app:iconPadding="20dp"
-            app:iconTint="#FA0202" />
+            app:iconTint="#FA0202"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/ic_reCenterButton"

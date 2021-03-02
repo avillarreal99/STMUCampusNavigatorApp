@@ -20,6 +20,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.health.SystemHealthManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -80,16 +81,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // MAP SET UP
         stmuMap = googleMap;
         initializeCampusLocationsList();
-        //initializeSearchBar();
+        initializeSearchBar();
 
         // Limit the map screen to only display St. Mary's
         final LatLngBounds STMU = new LatLngBounds(new LatLng(29.44945207195666, -98.56892350439986), new LatLng(29.454954521268178, -98.56024923502343)); // Create a LatLngBounds that includes St. Mary's University in United States.
         stmuMap.setLatLngBoundsForCameraTarget(STMU); // Constrain the camera target to St. Mary's University.
 
 
-        // Add a marker in St. Mary's University and move the camera
+        //  move the camera to StMU
         LatLng stMarysUniversity = new LatLng(29.4523, -98.5641);
-        stmuMap.addMarker(new MarkerOptions().position(stMarysUniversity).title("St. Mary's University"));
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15f));  // Zoom in on STMU (1 for world, 15 for streets, 20 for buildings)
 
         // Use intent to signal to system that location is being requested
@@ -128,8 +128,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // SETTING UP CAMPUSLOCATIONS ARRAYLIST METHODS ---------------------------------------------------------------------------------------------------
+    // SETTING UP CAMPUSLOCATIONSLIST METHODS -----------------------------------------------------------------------------------------------------------
 
+    // sets up the campusLocationsList ArrayList by reading from our asset file (By Darren Griffin)
     public void initializeCampusLocationsList()
     {
         System.out.println("In initializeCampusLocationsList");   // for testing purposes
@@ -153,27 +154,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CampusLocation campusLocationObj = new CampusLocation(val0, val1, val2, val3, val4); //Creates new object for each row of the .txt file
                 campusLocationsList.add(campusLocationObj); //stores all locations into an ArrayList.
             }
-
-
-            // will be helpful for creating the Search function. Searching through the ArrayList to find details about a Location object would be similar.
-            String userInput = "Richter";
-
-            for(CampusLocation l : campusLocationsList)
-            {
-                if(l.getLocationName().contains(userInput))
-                {
-                    System.out.println(l.toString());
-                    /*
-                    System.out.println(l.getLocationName());
-                    System.out.println(l.getLongitude());
-                    System.out.println(l.getLatitude());
-                    System.out.println(l.getCategory());
-                    System.out.println("\n");
-
-                     */
-                }
-            }
-
         }
         catch (FileNotFoundException e)
         {
@@ -188,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // RECENTER BUTTON METHODS ------------------------------------------------------------------------------------------------------------------------
 
-    // When recenter button is pressed, user location will be obtained (by Natalie)
+    // When recenter button is pressed, user location will be obtained (by Natalie Rankin)
     private void initalizeRecenterbutton(Location lastKnownLocation)
     {
         Button recenterButton = (Button) findViewById(R.id.recenterButton);
@@ -207,7 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    // Moves map to users location (by Natalie)
+    // Moves map to users location (by Natalie Rankin)
     public void centerMapOnLocation(Location location, String title)
     {
         LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
@@ -216,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,20f));
     }
 
-    // Requests location permissions and calls centerMapOnLocation if permission is granted (by Natalie)
+    // Requests location permissions and calls centerMapOnLocation if permission is granted (by Natalie Rankin)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
@@ -238,28 +218,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // SEARCH BAR METHODS -----------------------------------------------------------------------------------------------------------------------------
 
-    /*
-    private void initializeSearchBar()   // ignore until we start search functionality
+    // initializes and listens for activity in SearchBar (By Amanda Villarreal)
+    private void initializeSearchBar()
     {
         campusSearchBar.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
-            @Override
+            @Override // press enter or search to make a search
             public boolean onEditorAction(TextView v, int searchActionId, KeyEvent searchEvent)
             {
                 if((searchActionId == EditorInfo.IME_ACTION_SEARCH) || (searchActionId == EditorInfo.IME_ACTION_DONE)
-                        || (searchEvent.getAction() == KeyEvent.ACTION_DOWN) || (searchEvent.getAction() == KeyEvent.KEYCODE_ENTER))
+                  || (searchEvent.getAction() == KeyEvent.ACTION_DOWN) || (searchEvent.getAction() == KeyEvent.KEYCODE_ENTER))
                 {
-                    // This is where we search for campus locations
-                    searchCampusLocation();
+                    searchCampusLocation(); // This is where we search for campus locations
                 }
                 return false;
             }
         });
     }
 
+    // conducts a search based on user inputted text (By Amanda Villarreal and Darren Griffin)
     private void searchCampusLocation()
     {
-        String searchBarString = campusSearchBar.getText().toString();
+        String searchBarText = campusSearchBar.getText().toString();
+        System.out.println("Searching campus locations...");  // test print
+        stmuMap.clear();
+
+        // search for a match between the user's inputted string and a campus location
+        for(CampusLocation location : campusLocationsList)
+        {
+            if(location.getLocationName().contains(searchBarText))
+            {
+                System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
+                LatLng locationPosition = new LatLng(Float.parseFloat(location.getLongitude()), Float.parseFloat(location.getLatitude())); // lat and lng are flipped for some reason
+                stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
+            }
+        }
     }
-    */
+
 }
