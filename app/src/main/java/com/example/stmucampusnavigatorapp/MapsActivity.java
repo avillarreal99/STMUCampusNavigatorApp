@@ -50,9 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
 
     // GLOBAL WIDGETS AND VARIABLES
-    private GoogleMap stmuMap;          // interactive map // test
+    private GoogleMap stmuMap;          // interactive map // test poop (2nd method)
     private EditText campusSearchBar;   // Search bar text field
-    public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
+    private List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     LocationManager locationManager;    // for getting user location
     LocationListener locationListener;  // for getting user location
     private boolean permissionGranted = false;   // for determining user allowing location permissions
@@ -152,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String val3 = b[3];  // category
                 String val4 = b[4];  // phoneNumber
                 CampusLocation campusLocationObj = new CampusLocation(val0, val1, val2, val3, val4); //Creates new object for each row of the .txt file
-                campusLocationsList.add(campusLocationObj); //stores all locations into an ArrayList.
+                campusLocationsList.add(campusLocationObj);
             }
         }
         catch (FileNotFoundException e)
