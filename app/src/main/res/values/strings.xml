@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">STMUCampusNavigatorApp</string>
     <string name="title_activity_maps">Map</string>
+    <string name="a_search_icon">A Search Icon</string>
+    <string name="search_for_campus_location">Search for a Campus Location</string>
+    <string name="UDP_text">UDP</string>
+    <string name="recenterIconDescription">A recenter icon</string>
+    <string name="Academics">Academics</string>
+    <string name="Amenities">Amenities</string>
+    <string name="Athletics">Athletics</string>
+    <string name="Food">Food</string>
+    <string name="Gathering">Gathering</string>
+    <string name="Library">Library</string>
+    <string name="Parking">Parking</string>
+    <string name="Sacred">Sacred</string>
+    <string name="Safety">Safety</string>
 </resources>

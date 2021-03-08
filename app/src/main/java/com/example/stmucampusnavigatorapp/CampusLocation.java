@@ -12,7 +12,7 @@ public class CampusLocation
     private String category;
     private String phoneNumber; // 0 for NULL (No phone number available)
 
-    public CampusLocation(String locationName, String longitudeCoord, String latitudeCoord, String locationCategory, String locationPhoneNum)
+    public CampusLocation(String locationName, String longitudeCoord, String latitudeCoord, String locationPhoneNum, String  locationCategory)
     {
         location = locationName;
         longitude = longitudeCoord;

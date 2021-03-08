@@ -46,11 +46,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener
 {
 
     // GLOBAL WIDGETS AND VARIABLES
-    private GoogleMap stmuMap;          // interactive map // test
+    private GoogleMap stmuMap;          // interactive map // test test
     private EditText campusSearchBar;   // Search bar text field
     public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     LocationManager locationManager;    // for getting user location
@@ -82,6 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stmuMap = googleMap;
         initializeCampusLocationsList();
         initializeSearchBar();
+        initializeScrollButtons();
 
         // Limit the map screen to only display St. Mary's
         final LatLngBounds STMU = new LatLngBounds(new LatLng(29.44945207195666, -98.56892350439986), new LatLng(29.454954521268178, -98.56024923502343)); // Create a LatLngBounds that includes St. Mary's University in United States.
@@ -190,10 +191,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Moves map to users location (by Natalie Rankin)
     public void centerMapOnLocation(Location location, String title)
     {
-        LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
-        stmuMap.clear();
-        stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!"));
-        stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,20f));
+        /*BUG FIX NEEDED: Location = NULL if the user initially has location turned off. The app does
+                          not ask the user to turn location services on when pressing recenter button.
+                          Recenter button must first check if location services are on, if not, ask
+                          user to turn location services on.
+        */
+        if(location == null){ //probably better to use try catch
+            System.out.println("location was null");
+        }
+        else {
+            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            stmuMap.clear();
+            stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!"));
+            stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 20f));
+        }
     }
 
     // Requests location permissions and calls centerMapOnLocation if permission is granted (by Natalie Rankin)
@@ -229,30 +240,118 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if((searchActionId == EditorInfo.IME_ACTION_SEARCH) || (searchActionId == EditorInfo.IME_ACTION_DONE)
                   || (searchEvent.getAction() == KeyEvent.ACTION_DOWN) || (searchEvent.getAction() == KeyEvent.KEYCODE_ENTER))
                 {
-                    searchCampusLocation(); // This is where we search for campus locations
+                    searchCampusLocation(campusSearchBar.getText().toString(), false); // This is where we search for campus locations
                 }
                 return false;
             }
         });
     }
 
-    // conducts a search based on user inputted text (By Amanda Villarreal and Darren Griffin)
-    private void searchCampusLocation()
+    // conducts a search based on user inputted text (By Amanda Villarreal, Darren Griffin, and Alex Montes)
+    private void searchCampusLocation(String searchText, boolean searchingByCategory)
     {
-        String searchBarText = campusSearchBar.getText().toString();
         System.out.println("Searching campus locations...");  // test print
         stmuMap.clear();
 
         // search for a match between the user's inputted string and a campus location
         for(CampusLocation location : campusLocationsList)
         {
-            if(location.getLocationName().contains(searchBarText))
+            if(searchingByCategory)
             {
-                System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
-                LatLng locationPosition = new LatLng(Float.parseFloat(location.getLongitude()), Float.parseFloat(location.getLatitude())); // lat and lng are flipped for some reason
-                stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
+                System.out.println(location.getCategory().toLowerCase());
+                if(location.getCategory().toLowerCase().contains(searchText.toLowerCase()))
+                {
+                   // System.out.println(location.toString());
+                    LatLng locationPosition = new LatLng(Float.parseFloat(location.getLongitude()), Float.parseFloat(location.getLatitude())); // lat and lng are flipped for some reason
+                    stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
+                }
+            }
+            else
+            {
+                if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase())) {
+                    System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
+                    LatLng locationPosition = new LatLng(Float.parseFloat(location.getLongitude()), Float.parseFloat(location.getLatitude())); // lat and lng are flipped for some reason
+                    stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
+                }
             }
         }
     }
 
+
+    //CATEGORIES SCROLLBAR METHODS --------------------------------------------------------------------------------------------------------------------
+
+    //Initializes and listens for one of the buttons in the categories bar (By Alex Montes)
+    private void initializeScrollButtons()
+    {
+        Button academicsBttn = (Button) findViewById(R.id.academicsButton);
+        Button amenitiesBttn = (Button) findViewById(R.id.amenitiesButton);
+        Button athleticsBttn = (Button) findViewById(R.id.athleticsButton);
+        Button foodBttn = (Button) findViewById(R.id.foodButton);
+        Button gatheringsBttn = (Button) findViewById(R.id.gatheringButton);
+        Button libraryBttn = (Button) findViewById(R.id.libraryButton);
+        Button parkingBttn = (Button) findViewById(R.id.parkingButton);
+        Button sacredBttn = (Button) findViewById(R.id.sacredButton);
+        Button safetyBttn = (Button) findViewById(R.id.safetyButton);
+
+
+        //listens for one of the buttons called and calls onClick()
+        academicsBttn.setOnClickListener(this);
+        amenitiesBttn.setOnClickListener(this);
+        athleticsBttn.setOnClickListener(this);
+        foodBttn.setOnClickListener(this);
+        gatheringsBttn.setOnClickListener(this);
+        libraryBttn.setOnClickListener(this);
+        parkingBttn.setOnClickListener(this);
+        sacredBttn.setOnClickListener(this);
+        safetyBttn.setOnClickListener(this);
+    }
+
+
+    //Function that determines what the specified button does (By Alex Montes)
+    @Override
+    public void onClick(View bttn)
+    {
+        //Searches for campus location based on the location category that was selected
+        switch (bttn.getId())
+        {
+            case R.id.academicsButton:
+                Button academicsBttn = (Button) findViewById(R.id.academicsButton);
+                searchCampusLocation(academicsBttn.getText().toString(), true);
+                break;
+            case R.id.amenitiesButton:
+                Button amenitiesBttn = (Button) findViewById(R.id.amenitiesButton);
+                searchCampusLocation(amenitiesBttn.getText().toString(), true);
+                break;
+            case R.id.athleticsButton:
+                Button athleticsBttn = (Button) findViewById(R.id.athleticsButton);
+                searchCampusLocation(athleticsBttn.getText().toString(), true);
+                break;
+            case R.id.foodButton:
+                Button foodBttn = (Button) findViewById(R.id.foodButton);
+                searchCampusLocation(foodBttn.getText().toString(), true);
+                break;
+            case R.id.gatheringButton:
+                Button gatheringsBttn = (Button) findViewById(R.id.gatheringButton);
+                searchCampusLocation(gatheringsBttn.getText().toString(), true);
+                break;
+            case R.id.libraryButton:
+                Button libraryBttn = (Button) findViewById(R.id.libraryButton);
+                searchCampusLocation(libraryBttn.getText().toString(), true);
+                break;
+            case R.id.parkingButton:
+                Button parkingBttn = (Button) findViewById(R.id.parkingButton);
+                searchCampusLocation(parkingBttn.getText().toString(), true);
+                break;
+            case R.id.sacredButton:
+                Button sacredBttn = (Button) findViewById(R.id.sacredButton);
+                searchCampusLocation(sacredBttn.getText().toString(), true);
+                break;
+            case R.id.safetyButton:
+                Button safetyBttn = (Button) findViewById(R.id.safetyButton);
+                searchCampusLocation(safetyBttn.getText().toString(), true);
+                break;
+            default:
+                System.out.println("Invalid button press");
+        }
+    }
 }

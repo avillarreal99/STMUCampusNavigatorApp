@@ -6,9 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- GOOGLE MAP FRAGMENT -->
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -37,8 +36,9 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:contentDescription="A search icon"
+            android:contentDescription="@string/a_search_icon"
             android:src="@drawable/ic_magnify" />
 
 
@@ -49,9 +49,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/ic_magnify"
-            android:autoText="false"
             android:background="@null"
-            android:hint="  Search for a campus location..."
+            android:hint="@string/search_for_campus_location"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="#000"
@@ -61,6 +60,7 @@
      <!-- UPD BUTTON -->
     </RelativeLayout>
 
+    <!-- UDP Button -->
     <Button
         android:id="@+id/UPD"
         android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
         android:layout_marginRight="0dp"
         android:layout_marginBottom="1dp"
         android:backgroundTint="#15317E"
-        android:text="UPD"
+        android:text="@string/UDP_text"
         android:textColor="#FFD700"
         android:textSize="18sp" />
 
@@ -114,9 +114,159 @@
             android:layout_marginEnd="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginBottom="156dp"
-            android:contentDescription="A recenter icon"
+            android:contentDescription="@string/recenterIconDescription"
             android:src="@drawable/ic_baseline_gps_fixed_24" />
 
     </RelativeLayout>
+
+    <!-- CATEGORIES SCROLLVIEW -->
+
+    <HorizontalScrollView
+        android:id="@+id/CategoriesScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="130dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/academicsButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Academics"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/amenitiesButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Amenities"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/athleticsButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Athletics"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/foodButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Food"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/gatheringButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Gathering"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/libraryButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Library"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/parkingButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Parking"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/sacredButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Sacred"
+                android:translationY="70dp" />
+
+            <Button
+                android:id="@+id/safetyButton"
+                style="buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:scrollHorizontally="true"
+                android:text="@string/Safety"
+                android:translationY="70dp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
 </RelativeLayout>
