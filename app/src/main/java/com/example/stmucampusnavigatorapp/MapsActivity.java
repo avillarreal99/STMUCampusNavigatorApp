@@ -148,10 +148,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String a = vals[0];
                 String[] b = a.split(","); // splits each row into columns and sets each of the values.
                 String val0 = b[0];  // locationName
-                String val1 = b[1];  // longitude
-                String val2 = b[2];  // latitude
-                String val3 = b[3];  // category
-                String val4 = b[4];  // phoneNumber
+                String val1 = b[1];  // latitude
+                String val2 = b[2];  // longitude
+                String val3 = b[3];  // phoneNumber
+                String val4 = b[4];  // category
                 CampusLocation campusLocationObj = new CampusLocation(val0, val1, val2, val3, val4); //Creates new object for each row of the .txt file
                 campusLocationsList.add(campusLocationObj); //stores all locations into an ArrayList.
             }
@@ -262,7 +262,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(location.getCategory().toLowerCase().contains(searchText.toLowerCase()))
                 {
                    // System.out.println(location.toString());
-                    LatLng locationPosition = new LatLng(Float.parseFloat(location.getLongitude()), Float.parseFloat(location.getLatitude())); // lat and lng are flipped for some reason
+                    LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
             }
@@ -270,7 +270,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase())) {
                     System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
-                    LatLng locationPosition = new LatLng(Float.parseFloat(location.getLongitude()), Float.parseFloat(location.getLatitude())); // lat and lng are flipped for some reason
+                    LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
             }
@@ -353,5 +353,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             default:
                 System.out.println("Invalid button press");
         }
+    }
+
+    // DIRECTIONS METHODS -----------------------------------------------------------------------------------------------------------------------------
+
+    // code for when start directions button is pressed
+    // LatLng userLocation = new LatLng(userLocation.getLatitude(),userLocation.getLongitude());
+    //String url = getDirectionsURL(userLocation, DESTINATION, "walking");
+    //new FetchURL(MainActivity.this).execute(url, "walking");
+
+    // sets up the URL to be sent to google to create directions
+    private String getDirectionsURL(LatLng userLocation, LatLng destination, String directionMode)
+    {
+        // Users current location as a string
+        String userLocationString = "origin=" + userLocation.latitude + "," + userLocation.longitude;
+
+        // Destination as a string
+        String destinationString = "destination=" + destination.latitude + "," + destination.longitude;
+
+        // Travel mode as a string
+        String mode = "mode=" + directionMode;
+
+        // build parameters section of URL
+        String parameters = userLocationString + "&" + destinationString + "&" + mode;
+
+        // now building complete URL to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/json?" + parameters + "&key" + getString(R.string.google_maps_key);
+        return url;
     }
 }

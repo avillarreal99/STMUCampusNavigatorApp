@@ -10,15 +10,15 @@ public class CampusLocation
     private String longitude;
     private String latitude;
     private String category;
-    private String phoneNumber; // 0 for NULL (No phone number available)
+    private String phoneNumber; // 0 or NULL (No phone number available)
 
-    public CampusLocation(String locationName, String longitudeCoord, String latitudeCoord, String locationPhoneNum, String  locationCategory)
+    public CampusLocation(String locationName, String latitudeCoord, String longitudeCoord, String locationPhoneNum, String  locationCategory)
     {
         location = locationName;
-        longitude = longitudeCoord;
         latitude = latitudeCoord;
-        category = locationCategory;
+        longitude = longitudeCoord;
         phoneNumber = locationPhoneNum;
+        category = locationCategory;
     }
 
     public String getLocationName()
