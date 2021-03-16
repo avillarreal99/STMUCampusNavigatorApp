@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,7 +59,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Polyline directionalPolyline;
     LocationManager locationManager;    // for getting user location
     LocationListener locationListener;  // for getting user location
-    private boolean permissionGranted = false;   // for determining user allowing location permissions
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -107,7 +107,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationListener = new LocationListener()
             {
                 // These methods are required for LocationListener()
-                // We don't use them because we have to get user location permission
                 @Override
                 public void onLocationChanged(Location location){}
                 @Override
@@ -123,13 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                permissionGranted = true;
                 initalizeRecenterbutton(lastKnownLocation);
-            }
-            else
-            {
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                permissionGranted = false;
             }
         }
     }
@@ -182,13 +175,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
-                if (permissionGranted) // If user allows location permissions, get location
-                {
-                    centerMapOnLocation(lastKnownLocation,"User Location");
-                }
-                else {
-                    System.out.println("Location permissions must be enabled\n");
-                }
+                //Checks if location permission is enabled and if so centers map on user location
+                centerMapOnLocation(lastKnownLocation,"User Location");
             }
         });
     }
@@ -196,15 +184,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Moves map to users location (by Natalie Rankin)
     public void centerMapOnLocation(Location location, String title)
     {
-        /*BUG FIX NEEDED: Location = NULL if the user initially has location turned off. The app does
-                          not ask the user to turn location services on when pressing recenter button.
-                          Recenter button must first check if location services are on, if not, ask
-                          user to turn location services on.
-        */
-        if(location == null){ //probably better to use try catch
-            System.out.println("location was null");
+        //If location permissions not enabled, display AlertDialog to user
+        if(location == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Location Permissions Not Enabled");
+            builder.setMessage("Please go into your device's settings and enable location permissions");
+            builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+            builder.show();
         }
-        else {
+        else { //recenter map
             LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
             stmuMap.clear();
             stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!"));
