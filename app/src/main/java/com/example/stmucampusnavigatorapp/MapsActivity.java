@@ -371,7 +371,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String url = getDirectionsURL(starbucks, treadaway, "walking");
         new FetchURL(MapsActivity.this).execute(url, "walking");
         //onTaskDone();
-    }
+    } //test comment
 
     // sets up the URL to be sent to google to create directions (by Amanda Villarreal)
     private String getDirectionsURL(LatLng userLocation, LatLng destination, String directionMode)
