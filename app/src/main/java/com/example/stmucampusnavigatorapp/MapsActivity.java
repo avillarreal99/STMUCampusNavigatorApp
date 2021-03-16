@@ -1,7 +1,7 @@
 // St. Mary's Campus Navigator
 // STMUCampusNavigatorApp.app
 // Created Jan 12, 2021
-// Last Updated Feb 21, 2021
+// Last Updated March 16, 2021
 // Version 1
 // Project Team: Amanda Villarreal, Alex Montes, Natalie Rankin, Darren Griffin, Joe Flores, and Dat Trinh
 // ------------------------------------------------------------------------------------------------------------------
@@ -35,7 +35,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.Task;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -46,13 +48,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, TaskLoaderCallBack
 {
 
     // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map // test test
     private EditText campusSearchBar;   // Search bar text field
     public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
+    Polyline directionalPolyline;
     LocationManager locationManager;    // for getting user location
     LocationListener locationListener;  // for getting user location
     private boolean permissionGranted = false;   // for determining user allowing location permissions
@@ -83,6 +86,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeCampusLocationsList();
         initializeSearchBar();
         initializeScrollButtons();
+        practiceMethod();
+
 
         // Limit the map screen to only display St. Mary's
         final LatLngBounds STMU = new LatLngBounds(new LatLng(29.44945207195666, -98.56892350439986), new LatLng(29.454954521268178, -98.56024923502343)); // Create a LatLngBounds that includes St. Mary's University in United States.
@@ -357,12 +362,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // DIRECTIONS METHODS -----------------------------------------------------------------------------------------------------------------------------
 
-    // code for when start directions button is pressed
-    // LatLng userLocation = new LatLng(userLocation.getLatitude(),userLocation.getLongitude());
-    //String url = getDirectionsURL(userLocation, DESTINATION, "walking");
-    //new FetchURL(MainActivity.this).execute(url, "walking");
+    // practice method to invoke a directional polyline (by Amanda Villarreal)
+    private void practiceMethod()
+    {
+        // sample code for when start directions button is pressed
+        LatLng starbucks = new LatLng(29.45302,-98.5629);
+        LatLng treadaway = new LatLng(29.45499,-98.56301);
+        String url = getDirectionsURL(starbucks, treadaway, "walking");
+        new FetchURL(MapsActivity.this).execute(url, "walking");
+        //onTaskDone();
+    }
 
-    // sets up the URL to be sent to google to create directions
+    // sets up the URL to be sent to google to create directions (by Amanda Villarreal)
     private String getDirectionsURL(LatLng userLocation, LatLng destination, String directionMode)
     {
         // Users current location as a string
@@ -378,7 +389,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String parameters = userLocationString + "&" + destinationString + "&" + mode;
 
         // now building complete URL to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/json?" + parameters + "&key" + getString(R.string.google_maps_key);
+        String url = "https://maps.googleapis.com/maps/api/directions/json?" + parameters + "&key=" + getString(R.string.google_maps_key);
         return url;
+    }
+
+    // Draws polylines(by Amanda Villarreal)
+    @Override
+    public void onTaskDone(Object... values)
+    {
+        // create sample polyline
+        //PolylineOptions rectOption = new PolylineOptions().add(location1).add(location2).color(1);
+        directionalPolyline = stmuMap.addPolyline((PolylineOptions) values[0]);
     }
 }
