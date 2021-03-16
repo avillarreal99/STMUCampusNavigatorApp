@@ -3,7 +3,7 @@
 
     <item
         android:drawable="@android:drawable/ic_menu_mylocation"
-        android:width="60dp"
-        android:height="60dp"/>
+        android:width="45dp"
+        android:height="45dp"/>
 
 </layer-list>
