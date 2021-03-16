@@ -16,7 +16,7 @@
         tools:context=".MapsActivity" />
 
 
-    <!-- UDP Button -->
+    <!-- UPD Button -->
     <Button
         android:id="@+id/UPD"
         android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
             app:iconPadding="20dp"
             tools:visibility="visible" />
 
-
+        <!-- CATEGORIES SCROLLVIEW -->
         <HorizontalScrollView
             android:id="@+id/CategoriesScrollView"
             android:layout_width="match_parent"
@@ -260,7 +260,89 @@
 
     </RelativeLayout>
 
-    <!-- CATEGORIES SCROLLVIEW -->
+    <!--INFORMATION BAR-->
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="80dp"
+        android:text="ST.Louis Hall"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/startButton"
+        style="buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button"
+        android:text="Start"
+        android:textColor="@color/stmarydarkblue"
+        android:textColorHighlight="@color/stmaryblue"
+        app:backgroundTint="@color/stmarygold" />
+
+    <Button
+        android:id="@+id/directButton"
+        style="buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Directions"
+        android:textColor="@color/stmarydarkblue"
+        android:textColorHighlight="@color/stmaryblue"
+        app:backgroundTint="@color/stmarygold" />
+
+    <Button
+        android:id="@+id/callButton"
+        style="buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button"
+        android:text="Call"
+        android:textColor="@color/stmarydarkblue"
+        android:textColorHighlight="@color/stmaryblue"
+        app:backgroundTint="@color/stmarygold" />
+
+
 
 
 </RelativeLayout>
