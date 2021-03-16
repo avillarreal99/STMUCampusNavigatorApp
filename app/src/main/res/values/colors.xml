@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#D3D3D3</color>
+    <color name="stmaryblue">#004c97</color>
+    <color name="stmarydarkblue">#0c2341</color>
+    <color name="stmarygold">#f2c75c</color>
+    <color name="stmarypastelgold">#f6e1ab</color>
 </resources>
