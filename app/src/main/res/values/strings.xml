@@ -14,4 +14,8 @@
     <string name="Parking">Parking</string>
     <string name="Sacred">Sacred</string>
     <string name="Safety">Safety</string>
+    <string name="StartButtonText">Start</string>
+    <string name="DirectionsButtonText">Directions</string>
+    <string name="CallButtonText">Call</string>
+    <string name="LocationNamePlaceholder">Location Name</string>
 </resources>
