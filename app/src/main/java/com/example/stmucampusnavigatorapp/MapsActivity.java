@@ -34,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -48,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, TaskLoaderCallBack
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, TaskLoaderCallBack, GoogleMap.OnMarkerClickListener
 {
 
     // GLOBAL WIDGETS AND VARIABLES
@@ -59,6 +60,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;    // for getting user location
     LocationListener locationListener;  // for getting user location
     private boolean permissionGranted = false;   // for determining user allowing location permissions
+    public String selectedLocationName;
+    public String selectedLocationPhoneNumber;
+    public LatLng selectedLocationLatLng;
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -75,7 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // XML setup
         campusSearchBar = (EditText) findViewById(R.id.stmu_search);
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap)  // after Map is set up from onCreate()
@@ -133,6 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+
 
     // SETTING UP CAMPUSLOCATIONSLIST METHODS -----------------------------------------------------------------------------------------------------------
 
@@ -232,6 +236,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
     // SEARCH BAR METHODS -----------------------------------------------------------------------------------------------------------------------------
 
     // initializes and listens for activity in SearchBar (By Amanda Villarreal)
@@ -255,23 +260,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // conducts a search based on user inputted text (By Amanda Villarreal, Darren Griffin, and Alex Montes)
     private void searchCampusLocation(String searchText, boolean searchingByCategory)
     {
-        System.out.println("Searching campus locations...");  // test print
-        stmuMap.clear();
+        stmuMap.clear(); // empty map of any markers
 
         // search for a match between the user's inputted string and a campus location
         for(CampusLocation location : campusLocationsList)
         {
-            if(searchingByCategory)
+            if(searchingByCategory) // selected scrollbar button
             {
-                System.out.println(location.getCategory().toLowerCase());
                 if(location.getCategory().toLowerCase().contains(searchText.toLowerCase()))
                 {
-                   // System.out.println(location.toString());
                     LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
             }
-            else
+            else  // searched in search bar
             {
                 if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase())) {
                     System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
@@ -310,7 +312,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sacredBttn.setOnClickListener(this);
         safetyBttn.setOnClickListener(this);
     }
-
 
     //Function that determines what the specified button does (By Alex Montes)
     @Override
@@ -359,6 +360,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 System.out.println("Invalid button press");
         }
     }
+
+
+    // INFORMATION BAR METHODS------------------------------------------------------------------------------------------------------------------------
+
+    // Change name of location on Information Bar depending on selected marker (by Amanda Villarreal)
+    @Override
+    public boolean onMarkerClick(Marker marker)
+    {
+        TextView informationBarLocationName = (TextView) findViewById(R.id.locationNametextView);  // location's displayed name in Information Bar
+        selectedLocationName = marker.getTitle();
+
+        // Find the selected marker's LatLng and phone number, and store the values for later use
+        for(CampusLocation location : campusLocationsList)
+        {
+            if(location.getLocationName() == selectedLocationName)
+            {
+                selectedLocationPhoneNumber = location.getPhoneNumber();
+                selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
+            }
+        }
+
+        System.out.println("Location marker selected");
+        informationBarLocationName.setText(selectedLocationName);
+        return true;
+    }
+
 
     // DIRECTIONS METHODS -----------------------------------------------------------------------------------------------------------------------------
 
