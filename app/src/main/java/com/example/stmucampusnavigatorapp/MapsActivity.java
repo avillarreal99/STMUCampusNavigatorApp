@@ -24,6 +24,8 @@ import android.os.health.SystemHealthManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,7 +57,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map // test test
-    private EditText campusSearchBar;   // Search bar text field
+    private AutoCompleteTextView stmu_search;   // Search bar text field
+    public List<String> lName = new ArrayList<String>();
     public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     Polyline directionalPolyline;
     LocationManager locationManager;    // for getting user location
@@ -77,7 +80,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         // XML setup
-        campusSearchBar = (EditText) findViewById(R.id.stmu_search);
+        //campusSearchBar = (EditText) findViewById(R.id.stmu_search);
+
+        //New Search Bar Function
+        AutoCompleteTextView editText = findViewById(R.id.stmu_search); //test success
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, lName); //test success
+        editText.setAdapter(adapter); //test success
     }
 
     @Override
@@ -231,21 +239,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // SEARCH BAR METHODS -----------------------------------------------------------------------------------------------------------------------------
 
     // initializes and listens for activity in SearchBar (By Amanda Villarreal)
-    private void initializeSearchBar()
+    private void initializeSearchBar() //test success
     {
-        campusSearchBar.setOnEditorActionListener(new TextView.OnEditorActionListener()
+
+        for(CampusLocation location : campusLocationsList){
+            lName.add(location.getLocationName());
+        }
+
+/*
+        stmu_search.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override // press enter or search to make a search
             public boolean onEditorAction(TextView v, int searchActionId, KeyEvent searchEvent)
             {
                 if((searchActionId == EditorInfo.IME_ACTION_SEARCH) || (searchActionId == EditorInfo.IME_ACTION_DONE)
-                  || (searchEvent.getAction() == KeyEvent.ACTION_DOWN) || (searchEvent.getAction() == KeyEvent.KEYCODE_ENTER))
+                        || (searchEvent.getAction() == KeyEvent.ACTION_DOWN) || (searchEvent.getAction() == KeyEvent.KEYCODE_ENTER))
                 {
                     searchCampusLocation(campusSearchBar.getText().toString(), false); // This is where we search for campus locations
                 }
                 return false;
             }
-        });
+        }); */
     }
 
     // conducts a search based on user inputted text (By Amanda Villarreal, Darren Griffin, and Alex Montes)
@@ -264,14 +278,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
             }
+            /*
             else  // searched in search bar
             {
-                if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase())) {
+                if (location.getLocationName().toLowerCase().contains(stmu_search.getText().toString().toLowerCase())) {
                     System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
                     LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
-            }
+            }*/
         }
     }
 
@@ -356,7 +371,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // INFORMATION BAR METHODS------------------------------------------------------------------------------------------------------------------------
 
     // Change name of location on Information Bar depending on selected marker (by Amanda Villarreal)
-    @Override
+    //@Override
     public boolean onMarkerClick(Marker marker)
     {
         TextView informationBarLocationName = (TextView) findViewById(R.id.locationNametextView);  // location's displayed name in Information Bar
@@ -374,7 +389,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         System.out.println("Location marker selected");
         informationBarLocationName.setText(selectedLocationName);
-        return true;
+        return false;
     }
 
 

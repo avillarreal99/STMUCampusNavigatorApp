@@ -31,7 +31,7 @@
         android:textSize="18sp" />
 
     <!-- SEARCH BAR -->
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/stmu_search"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
@@ -259,7 +259,7 @@
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/informationBarNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="114dp"
+            android:layout_height="150dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="620dp"
