@@ -24,6 +24,7 @@ import android.os.health.SystemHealthManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -58,14 +59,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;          // interactive map // test test
     private AutoCompleteTextView stmu_search;   // Search bar text field
-    public List<String> lName = new ArrayList<String>();
-    public List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
+    private List<String> locationNameList = new ArrayList<String>();
+    private List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     Polyline directionalPolyline;
     LocationManager locationManager;    // for getting user location
     LocationListener locationListener;  // for getting user location
-    public String selectedLocationName;
-    public String selectedLocationPhoneNumber;
-    public LatLng selectedLocationLatLng;
+    private String selectedLocationName;
+    private String selectedLocationPhoneNumber;
+    private LatLng selectedLocationLatLng;
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -82,10 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // XML setup
         //campusSearchBar = (EditText) findViewById(R.id.stmu_search);
 
-        //New Search Bar Function
-        AutoCompleteTextView editText = findViewById(R.id.stmu_search); //test success
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, lName); //test success
-        editText.setAdapter(adapter); //test success
+
     }
 
     @Override
@@ -183,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // When recenter button is pressed, user location will be obtained (by Natalie Rankin)
     private void initalizeRecenterbutton(Location lastKnownLocation)
     {
-        Button recenterButton = (Button) findViewById(R.id.recenterButton);
+        Button recenterButton = findViewById(R.id.recenterButton);
         recenterButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -238,29 +236,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // SEARCH BAR METHODS -----------------------------------------------------------------------------------------------------------------------------
 
-    // initializes and listens for activity in SearchBar (By Amanda Villarreal)
+    // initializes and listens for activity in SearchBar (By Amanda Villarreal, Alex Montes, Darren Griffen)
     private void initializeSearchBar() //test success
     {
+        //New Search Bar Function
+        stmu_search = findViewById(R.id.stmu_search);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, locationNameList); //test success
+        stmu_search.setAdapter(adapter); //test success
 
-        for(CampusLocation location : campusLocationsList){
-            lName.add(location.getLocationName());
+        //Darren Comment
+        for(CampusLocation location : campusLocationsList)
+        {
+            locationNameList.add(location.getLocationName());
         }
 
-/*
+
+        //Listens for key press
         stmu_search.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
-            @Override // press enter or search to make a search
-            public boolean onEditorAction(TextView v, int searchActionId, KeyEvent searchEvent)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
-                if((searchActionId == EditorInfo.IME_ACTION_SEARCH) || (searchActionId == EditorInfo.IME_ACTION_DONE)
-                        || (searchEvent.getAction() == KeyEvent.ACTION_DOWN) || (searchEvent.getAction() == KeyEvent.KEYCODE_ENTER))
+                //if key press is a search
+                if((actionId == EditorInfo.IME_ACTION_SEARCH) || (actionId == EditorInfo.IME_ACTION_DONE)
+                        || (event.getAction() == KeyEvent.ACTION_DOWN) || (event.getAction() == KeyEvent.KEYCODE_ENTER))
                 {
-                    searchCampusLocation(campusSearchBar.getText().toString(), false); // This is where we search for campus locations
+                    stmu_search.dismissDropDown(); //get rid of drop down bar
+                    searchCampusLocation(stmu_search.getText().toString(), false); //search for campus locations
                 }
                 return false;
             }
-        }); */
+        });
+
+        //listens for suggestion clicks
+        stmu_search.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                searchCampusLocation(adapter.getItem(position), false); //search for specific location
+            }
+        });
     }
+
 
     // conducts a search based on user inputted text (By Amanda Villarreal, Darren Griffin, and Alex Montes)
     private void searchCampusLocation(String searchText, boolean searchingByCategory)
@@ -278,15 +296,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
             }
-            /*
+
             else  // searched in search bar
             {
-                if (location.getLocationName().toLowerCase().contains(stmu_search.getText().toString().toLowerCase())) {
+                if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase())) {
                     System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
                     LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
-            }*/
+            }
         }
     }
 
@@ -296,15 +314,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Initializes and listens for one of the buttons in the categories bar (By Alex Montes)
     private void initializeScrollButtons()
     {
-        Button academicsBttn = (Button) findViewById(R.id.academicsButton);
-        Button amenitiesBttn = (Button) findViewById(R.id.amenitiesButton);
-        Button athleticsBttn = (Button) findViewById(R.id.athleticsButton);
-        Button foodBttn = (Button) findViewById(R.id.foodButton);
-        Button gatheringsBttn = (Button) findViewById(R.id.gatheringButton);
-        Button libraryBttn = (Button) findViewById(R.id.libraryButton);
-        Button parkingBttn = (Button) findViewById(R.id.parkingButton);
-        Button sacredBttn = (Button) findViewById(R.id.sacredButton);
-        Button safetyBttn = (Button) findViewById(R.id.safetyButton);
+        Button academicsBttn  = findViewById(R.id.academicsButton);
+        Button amenitiesBttn  = findViewById(R.id.amenitiesButton);
+        Button athleticsBttn  = findViewById(R.id.athleticsButton);
+        Button foodBttn       = findViewById(R.id.foodButton);
+        Button gatheringsBttn = findViewById(R.id.gatheringButton);
+        Button libraryBttn    = findViewById(R.id.libraryButton);
+        Button parkingBttn    = findViewById(R.id.parkingButton);
+        Button sacredBttn     = findViewById(R.id.sacredButton);
+        Button safetyBttn     = findViewById(R.id.safetyButton);
 
 
         //listens for one of the buttons called and calls onClick()
@@ -319,6 +337,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         safetyBttn.setOnClickListener(this);
     }
 
+
     //Function that determines what the specified button does (By Alex Montes)
     @Override
     public void onClick(View bttn)
@@ -327,39 +346,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch (bttn.getId())
         {
             case R.id.academicsButton:
-                Button academicsBttn = (Button) findViewById(R.id.academicsButton);
+                Button academicsBttn = findViewById(R.id.academicsButton);
                 searchCampusLocation(academicsBttn.getText().toString(), true);
                 break;
             case R.id.amenitiesButton:
-                Button amenitiesBttn = (Button) findViewById(R.id.amenitiesButton);
+                Button amenitiesBttn = findViewById(R.id.amenitiesButton);
                 searchCampusLocation(amenitiesBttn.getText().toString(), true);
                 break;
             case R.id.athleticsButton:
-                Button athleticsBttn = (Button) findViewById(R.id.athleticsButton);
+                Button athleticsBttn = findViewById(R.id.athleticsButton);
                 searchCampusLocation(athleticsBttn.getText().toString(), true);
                 break;
             case R.id.foodButton:
-                Button foodBttn = (Button) findViewById(R.id.foodButton);
+                Button foodBttn = findViewById(R.id.foodButton);
                 searchCampusLocation(foodBttn.getText().toString(), true);
                 break;
             case R.id.gatheringButton:
-                Button gatheringsBttn = (Button) findViewById(R.id.gatheringButton);
+                Button gatheringsBttn = findViewById(R.id.gatheringButton);
                 searchCampusLocation(gatheringsBttn.getText().toString(), true);
                 break;
             case R.id.libraryButton:
-                Button libraryBttn = (Button) findViewById(R.id.libraryButton);
+                Button libraryBttn = findViewById(R.id.libraryButton);
                 searchCampusLocation(libraryBttn.getText().toString(), true);
                 break;
             case R.id.parkingButton:
-                Button parkingBttn = (Button) findViewById(R.id.parkingButton);
+                Button parkingBttn = findViewById(R.id.parkingButton);
                 searchCampusLocation(parkingBttn.getText().toString(), true);
                 break;
             case R.id.sacredButton:
-                Button sacredBttn = (Button) findViewById(R.id.sacredButton);
+                Button sacredBttn = findViewById(R.id.sacredButton);
                 searchCampusLocation(sacredBttn.getText().toString(), true);
                 break;
             case R.id.safetyButton:
-                Button safetyBttn = (Button) findViewById(R.id.safetyButton);
+                Button safetyBttn = findViewById(R.id.safetyButton);
                 searchCampusLocation(safetyBttn.getText().toString(), true);
                 break;
             default:
@@ -406,6 +425,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //onTaskDone();
     }
 
+
     // sets up the URL to be sent to google to create directions (by Amanda Villarreal)
     private String getDirectionsURL(LatLng userLocation, LatLng destination, String directionMode)
     {
@@ -425,6 +445,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String url = "https://maps.googleapis.com/maps/api/directions/json?" + parameters + "&key=" + getString(R.string.google_maps_key);
         return url;
     }
+
 
     // Draws polylines(by Amanda Villarreal)
     @Override
