@@ -1,7 +1,7 @@
 // St. Mary's Campus Navigator
 // STMUCampusNavigatorApp.app
 // Created Jan 12, 2021
-// Last Updated March 16, 2021
+// Last Updated March 29, 2021
 // Version 1
 // Project Team: Amanda Villarreal, Alex Montes, Natalie Rankin, Darren Griffin, Joe Flores, and Dat Trinh
 // ------------------------------------------------------------------------------------------------------------------
@@ -9,6 +9,7 @@
 // IMPORTS AND PACKAGES (DO NOT DELETE)
 package com.example.stmucampusnavigatorapp;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -93,10 +94,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeSearchBar();
         initializeScrollButtons();
         initializeMarkerListener();
+        initializeUPDButton();
         //initializeDirectionsButton();
         //initializeCallButton();
         //initializeStartButton();
-
 
         // Limit the map screen to only display St. Mary's
         final LatLngBounds STMU = new LatLngBounds(new LatLng(29.44945207195666, -98.56892350439986), new LatLng(29.454954521268178, -98.56024923502343)); // Create a LatLngBounds that includes St. Mary's University in United States.
@@ -398,8 +399,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    // UPD BUTTON METHODS-----------------------------------------------------------------------------------------------------------------------------
+
+    // listens for button click for UPD button, initializes all global location variables to values of UPD
+    public void initializeUPDButton()
+    {
+        Button UPDButton = findViewById(R.id.UPD);
+
+        UPDButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                // search through campus locations to find UPD
+                for(CampusLocation location : campusLocationsList)
+                {
+                    if(location.getLocationName().contains("UPD")) // UPD found
+                    {
+                        // set all global variables to values of UPD location
+                        selectedLocationName = location.getLocationName();
+                        selectedLocationPhoneNumber = location.getPhoneNumber();
+                        selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
+                        // change information bar name to UPD
+                        informationBarLocationName.setText(selectedLocationName);
+                        // add a marker of only UPD on map
+                        stmuMap.clear();
+                        stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName));
+                    }
+                }
+            }
+        });
+    }
+
+
     // INFORMATION BAR METHODS------------------------------------------------------------------------------------------------------------------------
 
+    // Change name of location on Information Bar depending on selected marker (by Amanda Villarreal)
     public void initializeMarkerListener()
     {
         stmuMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
