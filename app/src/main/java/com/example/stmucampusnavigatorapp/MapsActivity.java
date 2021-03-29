@@ -57,13 +57,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
 
     // GLOBAL WIDGETS AND VARIABLES
-    private GoogleMap stmuMap;          // interactive map // test test
+    private GoogleMap stmuMap;                  // interactive map
     private AutoCompleteTextView stmu_search;   // Search bar text field
-    private List<String> locationNameList = new ArrayList<String>();
+    TextView informationBarLocationName;
+    private List<String> locationNameList = new ArrayList<String>();              // what is this for?
     private List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
     Polyline directionalPolyline;
-    LocationManager locationManager;    // for getting user location
-    LocationListener locationListener;  // for getting user location
+    LocationManager locationManager;     // for getting user location
+    LocationListener locationListener;   // for getting user location
     private String selectedLocationName;
     private String selectedLocationPhoneNumber;
     private LatLng selectedLocationLatLng;
@@ -79,11 +80,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        // XML setup
-        //campusSearchBar = (EditText) findViewById(R.id.stmu_search);
-
-
     }
 
     @Override
@@ -92,10 +88,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("App is ready");
         // MAP SET UP
         stmuMap = googleMap;
+        informationBarLocationName = (TextView) findViewById(R.id.locationNametextView);  // initialize location's displayed name in Information Bar
         initializeCampusLocationsList();
         initializeSearchBar();
         initializeScrollButtons();
-        practiceMethod();
+        //initializeDirectionsButton();
+        //initializeCallButton();
+        //initializeStartButton();
 
 
         // Limit the map screen to only display St. Mary's
@@ -274,16 +273,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
+                // store location name globally
+                selectedLocationName = adapter.getItem(position);
+                informationBarLocationName.setText(selectedLocationName);
+
+                // Find the selected drop-down's LatLng and phone number, and store the global values for later use
+                for(CampusLocation location : campusLocationsList)
+                {
+                    if(location.getLocationName() == selectedLocationName)
+                    {
+                        selectedLocationPhoneNumber = location.getPhoneNumber();
+                        selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
+                    }
+                }
                 searchCampusLocation(adapter.getItem(position), false); //search for specific location
             }
         });
     }
 
-
     // conducts a search based on user inputted text (By Amanda Villarreal, Darren Griffin, and Alex Montes)
     private void searchCampusLocation(String searchText, boolean searchingByCategory)
     {
-        stmuMap.clear(); // empty map of any markers
+        stmuMap.clear(); // empty map of all markers
 
         // search for a match between the user's inputted string and a campus location
         for(CampusLocation location : campusLocationsList)
@@ -337,7 +348,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         safetyBttn.setOnClickListener(this);
     }
 
-
     //Function that determines what the specified button does (By Alex Montes)
     @Override
     public void onClick(View bttn)
@@ -390,10 +400,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // INFORMATION BAR METHODS------------------------------------------------------------------------------------------------------------------------
 
     // Change name of location on Information Bar depending on selected marker (by Amanda Villarreal)
-    //@Override
+    @Override
     public boolean onMarkerClick(Marker marker)
     {
-        TextView informationBarLocationName = (TextView) findViewById(R.id.locationNametextView);  // location's displayed name in Information Bar
         selectedLocationName = marker.getTitle();
 
         // Find the selected marker's LatLng and phone number, and store the global values for later use
@@ -407,24 +416,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         System.out.println("Location marker selected");
-        informationBarLocationName.setText(selectedLocationName);
+        informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
         return false;
+    }
+
+    // initializes directions button in Information Bar
+    public void initializeDirectionsButton()
+    {
+        Button directionsButton = findViewById(R.id.directButton);
+        LatLng starbucks = new LatLng(29.45302,-98.5629); // just for testing
+
+        directionsButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                // make a request for polyline
+                String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
+                new FetchURL(MapsActivity.this).execute(url, "walking");
+            }
+        });
+    }
+
+    // initializes call button in Information Bar
+    public void initializeCallButton()
+    {
+        Button callButton = findViewById(R.id.callButton);
+
+        callButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                // fill body here with call functionality
+            }
+        });
+    }
+
+    // initializes start button in Information Bar
+    public void initializeStartButton()
+    {
+        Button callButton = findViewById(R.id.startButton);
+
+        callButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                // fill body here with start functionality
+            }
+        });
     }
 
 
     // DIRECTIONS METHODS -----------------------------------------------------------------------------------------------------------------------------
-
-    // practice method to invoke a directional polyline (by Amanda Villarreal)
-    private void practiceMethod()
-    {
-        // sample code for when start directions button is pressed
-        LatLng starbucks = new LatLng(29.45302,-98.5629);
-        LatLng treadaway = new LatLng(29.45499,-98.56301);
-        String url = getDirectionsURL(starbucks, treadaway, "walking");
-        new FetchURL(MapsActivity.this).execute(url, "walking");
-        //onTaskDone();
-    }
-
 
     // sets up the URL to be sent to google to create directions (by Amanda Villarreal)
     private String getDirectionsURL(LatLng userLocation, LatLng destination, String directionMode)
@@ -446,13 +488,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return url;
     }
 
-
-    // Draws polylines(by Amanda Villarreal)
+    // Draws polylines (by Amanda Villarreal)
     @Override
     public void onTaskDone(Object... values)
     {
-        // create sample polyline
-        //PolylineOptions rectOption = new PolylineOptions().add(location1).add(location2).color(1);
+        if(directionalPolyline != null)
+            directionalPolyline.remove();
+
         directionalPolyline = stmuMap.addPolyline((PolylineOptions) values[0]);
     }
 }
