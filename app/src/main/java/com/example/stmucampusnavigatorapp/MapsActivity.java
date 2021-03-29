@@ -400,7 +400,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // INFORMATION BAR METHODS------------------------------------------------------------------------------------------------------------------------
 
-    // Change name of location on Information Bar depending on selected marker (by Amanda Villarreal)
     public void initializeMarkerListener()
     {
         stmuMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
