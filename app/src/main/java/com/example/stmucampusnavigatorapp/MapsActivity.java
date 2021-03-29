@@ -25,6 +25,7 @@ import android.os.health.SystemHealthManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -288,6 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
                     }
                 }
+                hideKeyboard();
                 searchCampusLocation(adapter.getItem(position), false); //search for specific location
             }
         });
@@ -321,6 +323,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    // hides the soft keyboard (Implemented by Amanda Villarreal, method written by a user on GeeksforGeeks)
+    public void hideKeyboard()
+    {
+        View view = this.getCurrentFocus();
+        if (view != null)
+        {
+            // now assign the system service to InputMethodManager
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     //CATEGORIES SCROLLBAR METHODS --------------------------------------------------------------------------------------------------------------------
 
