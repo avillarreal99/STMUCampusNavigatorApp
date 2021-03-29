@@ -92,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeCampusLocationsList();
         initializeSearchBar();
         initializeScrollButtons();
+        initializeMarkerListener();
         //initializeDirectionsButton();
         //initializeCallButton();
         //initializeStartButton();
@@ -400,23 +401,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // INFORMATION BAR METHODS------------------------------------------------------------------------------------------------------------------------
 
     // Change name of location on Information Bar depending on selected marker (by Amanda Villarreal)
+    public void initializeMarkerListener()
+    {
+        stmuMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker marker)
+            {
+                selectedLocationName = marker.getTitle();
+
+                // Find the selected marker's LatLng and phone number, and store the global values for later use
+                for(CampusLocation location : campusLocationsList)
+                {
+                    if(location.getLocationName() == selectedLocationName)
+                    {
+                        selectedLocationPhoneNumber = location.getPhoneNumber();
+                        selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
+                    }
+                }
+                System.out.println("Location marker selected");
+                informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
+                return false;
+            }
+        });
+    }
+
+    // This method is required by OnMarkerClickListener but is not used
     @Override
     public boolean onMarkerClick(Marker marker)
     {
-        selectedLocationName = marker.getTitle();
-
-        // Find the selected marker's LatLng and phone number, and store the global values for later use
-        for(CampusLocation location : campusLocationsList)
-        {
-            if(location.getLocationName() == selectedLocationName)
-            {
-                selectedLocationPhoneNumber = location.getPhoneNumber();
-                selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
-            }
-        }
-
-        System.out.println("Location marker selected");
-        informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
         return false;
     }
 
