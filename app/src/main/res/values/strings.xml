@@ -18,4 +18,5 @@
     <string name="DirectionsButtonText">Directions</string>
     <string name="CallButtonText">Call</string>
     <string name="LocationNamePlaceholder">Location Name</string>
+    <string name="STMUAppName">STMU Navigator App</string>
 </resources>
