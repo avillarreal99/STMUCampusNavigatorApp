@@ -96,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeScrollButtons();
         initializeMarkerListener();
         initializeUPDButton();
-        //initializeDirectionsButton();
+        initializeDirectionsButton();
         //initializeCallButton();
         //initializeStartButton();
 
@@ -456,16 +456,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 selectedLocationName = marker.getTitle();
 
+
                 // Find the selected marker's LatLng and phone number, and store the global values for later use
                 for(CampusLocation location : campusLocationsList)
                 {
-                    if(location.getLocationName() == selectedLocationName)
+                    if(location.getLocationName().contains(selectedLocationName))
                     {
                         selectedLocationPhoneNumber = location.getPhoneNumber();
                         selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
+                        System.out.println(selectedLocationLatLng);
                     }
                 }
-                System.out.println("Location marker selected");
+
                 informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
                 return false;
             }
@@ -490,6 +492,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 // make a request for polyline
+
                 String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
                 new FetchURL(MapsActivity.this).execute(url, "walking");
             }
