@@ -1,12 +1,3 @@
-// St. Mary's Campus Navigator
-// STMUCampusNavigatorApp.app
-// Created Jan 12, 2021
-// Last Updated March 29, 2021
-// Version 1
-// Project Team: Amanda Villarreal, Alex Montes, Natalie Rankin, Darren Griffin, Joe Flores, and Dat Trinh
-// ------------------------------------------------------------------------------------------------------------------
-
-// IMPORTS AND PACKAGES (DO NOT DELETE)
 package com.example.stmucampusnavigatorapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +8,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -64,12 +56,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView informationBarLocationName;
     private List<String> locationNameList = new ArrayList<String>();              // what is this for?
     private List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
-    Polyline directionalPolyline;
+    Polyline directionalPolyline;        // our directions line between locations
     LocationManager locationManager;     // for getting user location
     LocationListener locationListener;   // for getting user location
-    private String selectedLocationName;
-    private String selectedLocationPhoneNumber;
-    private LatLng selectedLocationLatLng;
+    private String selectedLocationName;         // For Information Bar
+    private String selectedLocationPhoneNumber;  // For Call Button
+    private LatLng selectedLocationLatLng;       // for Directions and Information Bar
+    private Location userLocation;               // specifically for Directions button
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -134,6 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                userLocation = lastKnownLocation;
                 initalizeRecenterbutton(lastKnownLocation);
             }
         }
@@ -222,10 +216,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         // If permission granted
-        if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        {
 
             // Make sure that PERMISSION_GRANTED is true before we ACCESS_FINE_LOCATION
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
 
                 // Store location
@@ -334,6 +330,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
 
     //CATEGORIES SCROLLBAR METHODS --------------------------------------------------------------------------------------------------------------------
 
@@ -454,8 +451,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker)
             {
-                selectedLocationName = marker.getTitle();
+                selectedLocationName = marker.getTitle(); // set global location name
 
+                // clear polylines
+                if(directionalPolyline != null)
+                    directionalPolyline.remove();
 
                 // Find the selected marker's LatLng and phone number, and store the global values for later use
                 for(CampusLocation location : campusLocationsList)
@@ -481,7 +481,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-    // initializes directions button in Information Bar
+    // initializes directions button in Information Bar (By Amanda Villarreal)
     public void initializeDirectionsButton()
     {
         Button directionsButton = findViewById(R.id.directButton);
@@ -491,10 +491,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
-                // make a request for polyline
-
-                String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
-                new FetchURL(MapsActivity.this).execute(url, "walking");
+                if(userLocation == null)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                    builder.setTitle("Location Permissions Not Enabled");
+                    builder.setMessage("Please go into your device's settings and enable location permissions");
+                    builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+                    builder.show();
+                }
+                else  // make request for polyline
+                {
+                    LatLng userCurrentLocation = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+                    stmuMap.clear();
+                    stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName)); // marker to destination
+                    stmuMap.addMarker(new MarkerOptions().position(userCurrentLocation).title("You are here")); // marker of user location
+                    String url = getDirectionsURL(userCurrentLocation, selectedLocationLatLng, "walking");
+                    new FetchURL(MapsActivity.this).execute(url, "walking");
+                }
             }
         });
     }
@@ -557,6 +570,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(directionalPolyline != null)
             directionalPolyline.remove();
 
+        PolylineOptions polyoptions = new PolylineOptions().color(Color.BLUE);
         directionalPolyline = stmuMap.addPolyline((PolylineOptions) values[0]);
     }
 }
