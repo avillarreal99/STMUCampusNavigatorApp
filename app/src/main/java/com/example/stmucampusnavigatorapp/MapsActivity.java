@@ -1,4 +1,5 @@
 // St. Mary's Campus Navigator
+
 // STMUCampusNavigatorApp.app
 // Created Jan 12, 2021
 // Last Updated March 29, 2021
@@ -492,7 +493,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 // make a request for polyline
-
+                stmuMap.clear();
+                stmuMap.addMarker(new MarkerOptions().position(starbucks).title("You are here"));
+                stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName));
                 String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
                 new FetchURL(MapsActivity.this).execute(url, "walking");
             }

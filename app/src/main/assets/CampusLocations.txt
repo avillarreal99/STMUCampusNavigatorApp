@@ -58,7 +58,7 @@ Marianist Chapel,29.45459,-98.56116,NULL,Sacred
 Marianist Cemetery,29.45432,-98.56116,NULL,Sacred
 Casa Maria Marianist Residence,29.45063,-98.56339,NULL,Sacred
 Marianist Residence,29.45472,-98.56144,2104363245,Sacred
-University Ministry ,29.45355,-98.56315,2104363213,Sacred
+University Ministry,29.45355,-98.56315,2104363213,Sacred
 Albert B. Alkek Business Building,29.45278,-98.56364,NULL,Academics
 Charles Francis Hall,29.45157,-98.56166,NULL,Academics
 Ernest A. Raba Law Building,29.45342,-98.56412,NULL,Academics
@@ -68,6 +68,8 @@ Law Classrooms Building,29.45311,-98.56473,NULL,Academics
 Moody Life Sciences Center,29.45406,-98.56163,NULL,Academics
 Reinbolt Hall,29.4529,-98.56164,NULL,Academics
 Richter Math-Engineering Center,29.45403,-98.56228,NULL,Academics
+Engineering Lab,29.45407,-98.56247,NULL,Academics
+Unmanned Arial Systems Lab,29.45430,-98.56216,NULL,Academics
 School of Law Courtroom,29.4529,-98.5649,NULL,Academics
 St. Louis Hall,29.45304,-98.56127,NULL,Academics
 St. Mary's University Research Center,29.44931,-98.56234,NULL,Academics
@@ -76,7 +78,7 @@ AT&T Center for Information Technology,29.44992,-98.56277,NULL,Academics
 University Center,29.45252,-98.56288,NULL,Amenities
 Barnes & Noble Bookstore,29.45248,-98.56305,2104363406,Amenities
 Contreras Student Lounge,29.45316,-98.56294,NULL,Amenities
-Chaminde Tower,29.45234,-98.56136,NULL,Amenities
+Chaminade Tower,29.45234,-98.56136,NULL,Amenities
 University Police Department (UPD),29.45482,-98.5634,2104311911,Safety
 Student Health Center,29.45179,-98.56143,2104363506,Safety
 Student Counseling Center,29.4536,-98.56372,2104363135,Safety
