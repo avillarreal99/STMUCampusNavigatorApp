@@ -19,7 +19,8 @@ import java.net.URL;
  * Created by Vishal on 10/20/2018.
  */
 
-public class FetchURL extends AsyncTask<String, Void, String> {
+public class FetchURL extends AsyncTask<String, Void, String>
+{
     Context mContext;
     String directionMode = "driving";
 
@@ -28,11 +29,13 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected String doInBackground(String... strings)
+    {
         // For storing data from web service
         String data = "";
         directionMode = strings[1];
-        try {
+        try
+        {
             // Fetching the data from web service
             data = downloadUrl(strings[0]);
             Log.d("mylog", "Background task data " + data.toString());
@@ -43,18 +46,21 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(String s)
+    {
         super.onPostExecute(s);
         PointsParser parserTask = new PointsParser(mContext, directionMode);
         // Invokes the thread for parsing the JSON data
         parserTask.execute(s);
     }
 
-    private String downloadUrl(String strUrl) throws IOException {
+    private String downloadUrl(String strUrl) throws IOException
+    {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;
-        try {
+        try
+        {
             URL url = new URL(strUrl);
             // Creating an http connection to communicate with url
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -65,15 +71,20 @@ public class FetchURL extends AsyncTask<String, Void, String> {
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
             StringBuffer sb = new StringBuffer();
             String line = "";
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null)
+            {
                 sb.append(line);
             }
             data = sb.toString();
             Log.d("mylog", "Downloaded URL: " + data.toString());
             br.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.d("mylog", "Exception downloading URL: " + e.toString());
-        } finally {
+        }
+        finally
+        {
             iStream.close();
             urlConnection.disconnect();
         }

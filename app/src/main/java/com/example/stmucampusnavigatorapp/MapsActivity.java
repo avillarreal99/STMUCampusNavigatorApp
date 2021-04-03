@@ -18,6 +18,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -61,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // GLOBAL WIDGETS AND VARIABLES
     private GoogleMap stmuMap;                  // interactive map
+    LatLng stMarysUniversity = new LatLng(29.4523, -98.5641);
     private AutoCompleteTextView stmu_search;   // Search bar text field
     TextView informationBarLocationName;
     private List<String> locationNameList = new ArrayList<String>();              // what is this for?
@@ -107,7 +110,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         //  move the camera to StMU
-        LatLng stMarysUniversity = new LatLng(29.4523, -98.5641);
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15f));  // Zoom in on STMU (1 for world, 15 for streets, 20 for buildings)
 
         // Use intent to signal to system that location is being requested
@@ -211,8 +213,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
             stmuMap.clear();
-            stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!"));
-            stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 20f));
+            stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
+            stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17f));
         }
     }
 
@@ -312,13 +314,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
                 }
             }
-
             else  // searched in search bar
             {
-                if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase())) {
+                if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase()))
+                {
                     System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
                     LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
-                    stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName()));
+                    stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName())).showInfoWindow();
                 }
             }
         }
@@ -437,7 +439,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         informationBarLocationName.setText(selectedLocationName);
                         // add a marker of only UPD on map
                         stmuMap.clear();
-                        stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName));
+                        stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName)).showInfoWindow();
                     }
                 }
             }
@@ -494,10 +496,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 // make a request for polyline
                 stmuMap.clear();
-                stmuMap.addMarker(new MarkerOptions().position(starbucks).title("You are here"));
-                stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName));
+                stmuMap.addMarker(new MarkerOptions().position(starbucks).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
+                stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName)).showInfoWindow();
+                stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15.5f));
                 String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
-                new FetchURL(MapsActivity.this).execute(url, "walking");
+                new FetchURL(MapsActivity.this).execute(url, "walking");  // create a directions request
             }
         });
     }
@@ -557,9 +560,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onTaskDone(Object... values)
     {
+        // remove existing polylines
         if(directionalPolyline != null)
             directionalPolyline.remove();
 
+        // draw new polyline
         directionalPolyline = stmuMap.addPolyline((PolylineOptions) values[0]);
+
     }
 }
