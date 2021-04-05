@@ -65,15 +65,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap stmuMap;                  // interactive map
     LatLng stMarysUniversity = new LatLng(29.4523, -98.5641);
     private AutoCompleteTextView stmu_search;   // Search bar text field
-    TextView informationBarLocationName;
+    TextView informationBarLocationName;        // Location name displayed in Information Bar
     private List<String> locationNameList = new ArrayList<String>();              // what is this for?
     private List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
-    Polyline directionalPolyline;
+    Polyline directionalPolyline;        // draws directions
     LocationManager locationManager;     // for getting user location
     LocationListener locationListener;   // for getting user location
-    private String selectedLocationName;
-    private String selectedLocationPhoneNumber;
-    private LatLng selectedLocationLatLng;
+    private String selectedLocationName;          // globals for information bar
+    private String selectedLocationPhoneNumber;   // globals for information bar
+    private LatLng selectedLocationLatLng;        // globals for information bar
+    Location userCurrentLocation;        // for use in directions Button
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -137,6 +138,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                userCurrentLocation = lastKnownLocation;
+                System.out.print("Your location: ");
+                System.out.println(userCurrentLocation);
                 initalizeRecenterbutton(lastKnownLocation);
             }
         }
@@ -148,8 +152,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // sets up the campusLocationsList ArrayList by reading from our asset file (By Darren Griffin)
     public void initializeCampusLocationsList()
     {
-        System.out.println("In initializeCampusLocationsList");   // for testing purposes
-
         // read text from asset CampusLocations.txt and store in an object of CampusLocation; add each CampusLocation to campusLocationsList
         try
         {
@@ -318,7 +320,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 if (location.getLocationName().toLowerCase().contains(searchText.toLowerCase()))
                 {
-                    System.out.println(location.toString()); // prints location name when match found (could be multiple matches)
                     LatLng locationPosition = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude())); // lat and lng are flipped for some reason
                     stmuMap.addMarker(new MarkerOptions().position(locationPosition).title(location.getLocationName())).showInfoWindow();
                 }
@@ -467,10 +468,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         selectedLocationPhoneNumber = location.getPhoneNumber();
                         selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
-                        System.out.println(selectedLocationLatLng);
                     }
                 }
-
                 informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
                 return false;
             }
@@ -488,19 +487,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void initializeDirectionsButton()
     {
         Button directionsButton = findViewById(R.id.directButton);
-        LatLng starbucks = new LatLng(29.45302,-98.5629); // just for testing
 
         directionsButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
-                // make a request for polyline
-                stmuMap.clear();
-                stmuMap.addMarker(new MarkerOptions().position(starbucks).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
-                stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName)).showInfoWindow();
-                stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15.5f));
-                String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
-                new FetchURL(MapsActivity.this).execute(url, "walking");  // create a directions request
+                LatLng userLocation = new LatLng(userCurrentLocation.getLatitude(), userCurrentLocation.getLongitude());
+                /*
+                if(userCurrentLocation == null)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                    builder.setTitle("Location Permissions Not Enabled");
+                    builder.setMessage("Please go into your device's settings and enable location permissions");
+                    builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+                    builder.show();
+                    System.out.println("location not enabled");
+                }
+                else
+                { */
+                    // make a request for polyline
+                    stmuMap.clear();
+                    stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
+                    stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName)).showInfoWindow();
+                    stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15.5f));
+                    String url = getDirectionsURL(userLocation, selectedLocationLatLng, "walking");
+                    new FetchURL(MapsActivity.this).execute(url, "walking");  // create a directions request
+                //}
             }
         });
     }
