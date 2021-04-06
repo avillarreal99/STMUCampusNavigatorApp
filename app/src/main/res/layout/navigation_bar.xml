@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/locationNametextView"
-            android:layout_width="372dp"
+            android:layout_width="375dp"
             android:layout_height="wrap_content"
             android:text="@string/LocationNamePlaceholder"
             android:textColor="#FFFFFF"

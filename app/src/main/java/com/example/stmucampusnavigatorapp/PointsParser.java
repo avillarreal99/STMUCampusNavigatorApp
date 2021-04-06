@@ -20,23 +20,27 @@ import java.util.List;
  * Created by Vishal on 10/20/2018.
  */
 
-public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>>
+{
     TaskLoaderCallBack taskCallback;
     String directionMode = "driving";
 
-    public PointsParser(Context mContext, String directionMode) {
+    public PointsParser(Context mContext, String directionMode)
+    {
         this.taskCallback = (TaskLoaderCallBack) mContext;
         this.directionMode = directionMode;
     }
 
     // Parsing the data in non-ui thread
     @Override
-    protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+    protected List<List<HashMap<String, String>>> doInBackground(String... jsonData)
+    {
 
         JSONObject jObject;
         List<List<HashMap<String, String>>> routes = null;
 
-        try {
+        try
+        {
             jObject = new JSONObject(jsonData[0]);
             Log.d("mylog", jsonData[0].toString());
             DataParser parser = new DataParser();
@@ -47,7 +51,9 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             Log.d("mylog", "Executing routes");
             Log.d("mylog", routes.toString());
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.d("mylog", e.toString());
             e.printStackTrace();
         }
@@ -56,17 +62,20 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
 
     // Executes in UI thread, after the parsing process
     @Override
-    protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+    protected void onPostExecute(List<List<HashMap<String, String>>> result)
+    {
         ArrayList<LatLng> points;
         PolylineOptions lineOptions = null;
         // Traversing through all the routes
-        for (int i = 0; i < result.size(); i++) {
+        for (int i = 0; i < result.size(); i++)
+        {
             points = new ArrayList<>();
             lineOptions = new PolylineOptions();
             // Fetching i-th route
             List<HashMap<String, String>> path = result.get(i);
             // Fetching all the points in i-th route
-            for (int j = 0; j < path.size(); j++) {
+            for (int j = 0; j < path.size(); j++)
+            {
                 HashMap<String, String> point = path.get(j);
                 double lat = Double.parseDouble(point.get("lat"));
                 double lng = Double.parseDouble(point.get("lng"));
@@ -75,10 +84,13 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             }
             // Adding all the points in the route to LineOptions
             lineOptions.addAll(points);
-            if (directionMode.equalsIgnoreCase("walking")) {
-                lineOptions.width(10);
-                lineOptions.color(Color.MAGENTA);
-            } else {
+            if (directionMode.equalsIgnoreCase("walking"))
+            {
+                lineOptions.width(15);
+                lineOptions.color(Color.BLUE);
+            }
+            else
+            {
                 lineOptions.width(20);
                 lineOptions.color(Color.BLUE);
             }
@@ -86,11 +98,14 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
         }
 
         // Drawing polyline in the Google Map for the i-th route
-        if (lineOptions != null) {
+        if (lineOptions != null)
+        {
             //mMap.addPolyline(lineOptions);
             taskCallback.onTaskDone(lineOptions);
 
-        } else {
+        }
+        else
+        {
             Log.d("mylog", "without Polylines drawn");
         }
     }
