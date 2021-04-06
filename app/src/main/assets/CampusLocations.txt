@@ -69,7 +69,7 @@ Moody Life Sciences Center,29.45406,-98.56163,NULL,Academics
 Reinbolt Hall,29.4529,-98.56164,NULL,Academics
 Richter Math-Engineering Center,29.45403,-98.56228,NULL,Academics
 Engineering Lab,29.45407,-98.56247,NULL,Academics
-Unmanned Arial Systems Lab,29.45430,-98.56216,NULL,Academics
+Unmanned Aerial Systems Lab,29.45430,-98.56216,NULL,Academics
 School of Law Courtroom,29.4529,-98.5649,NULL,Academics
 St. Louis Hall,29.45304,-98.56127,NULL,Academics
 St. Mary's University Research Center,29.44931,-98.56234,NULL,Academics

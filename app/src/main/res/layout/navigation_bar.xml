@@ -80,7 +80,7 @@
             android:textColor="@color/stmarydarkblue"
             android:textColorHighlight="@color/stmaryblue"
             android:translationX="-100dp"
-            android:translationY="100dp"/>
+            android:translationY="100dp" />
 
     </RelativeLayout>
 

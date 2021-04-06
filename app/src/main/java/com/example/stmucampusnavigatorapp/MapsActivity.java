@@ -407,6 +407,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case R.id.residenceButton:
                 Button residenceBttn = findViewById(R.id.residenceButton);
                 searchCampusLocation(residenceBttn.getText().toString(), true);
+                break;
             case R.id.sacredButton:
                 Button sacredBttn = findViewById(R.id.sacredButton);
                 searchCampusLocation(sacredBttn.getText().toString(), true);
