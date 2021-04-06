@@ -12,11 +12,12 @@
     <string name="Gathering">Gathering</string>
     <string name="Library">Library</string>
     <string name="Parking">Parking</string>
+    <string name="Residence">Residence</string>
     <string name="Sacred">Sacred</string>
     <string name="Safety">Safety</string>
     <string name="StartButtonText">Start</string>
     <string name="DirectionsButtonText">Directions</string>
     <string name="CallButtonText">Call</string>
     <string name="LocationNamePlaceholder">Location Name</string>
-    <string name="STMUAppName">STMU Navigator App</string>
+    <string name="STMUAppName">STMU Campus Navigator</string>
 </resources>

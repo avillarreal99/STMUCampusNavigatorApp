@@ -347,6 +347,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Button gatheringsBttn = findViewById(R.id.gatheringButton);
         Button libraryBttn    = findViewById(R.id.libraryButton);
         Button parkingBttn    = findViewById(R.id.parkingButton);
+        Button residenceBttn  = findViewById(R.id.residenceButton);
         Button sacredBttn     = findViewById(R.id.sacredButton);
         Button safetyBttn     = findViewById(R.id.safetyButton);
 
@@ -359,6 +360,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         gatheringsBttn.setOnClickListener(this);
         libraryBttn.setOnClickListener(this);
         parkingBttn.setOnClickListener(this);
+        residenceBttn.setOnClickListener(this);
         sacredBttn.setOnClickListener(this);
         safetyBttn.setOnClickListener(this);
     }
@@ -398,6 +400,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Button parkingBttn = findViewById(R.id.parkingButton);
                 searchCampusLocation(parkingBttn.getText().toString(), true);
                 break;
+            case R.id.residenceButton:
+                Button residenceBttn = findViewById(R.id.residenceButton);
+                searchCampusLocation(residenceBttn.getText().toString(), true);
             case R.id.sacredButton:
                 Button sacredBttn = findViewById(R.id.sacredButton);
                 searchCampusLocation(sacredBttn.getText().toString(), true);
@@ -492,7 +497,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 // make a request for polyline
-
+                stmuMap.clear();
+                stmuMap.addMarker(new MarkerOptions().position(starbucks).title("You are here"));
+                stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName));
                 String url = getDirectionsURL(starbucks, selectedLocationLatLng, "walking");
                 new FetchURL(MapsActivity.this).execute(url, "walking");
             }

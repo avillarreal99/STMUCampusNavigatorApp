@@ -223,6 +223,23 @@
                     android:translationY="10dp" />
 
                 <Button
+                    android:id="@+id/residenceButton"
+                    style="buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_button"
+                    android:padding="3dp"
+                    android:scrollHorizontally="true"
+                    android:text="@string/Residence"
+                    android:textColor="@color/stmarydarkblue"
+                    android:translationY="10dp" />
+
+                <Button
                     android:id="@+id/sacredButton"
                     style="buttonBarButtonStyle"
                     android:layout_width="wrap_content"
@@ -255,6 +272,7 @@
                     android:text="@string/Safety"
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
+
             </LinearLayout>
         </HorizontalScrollView>
 
