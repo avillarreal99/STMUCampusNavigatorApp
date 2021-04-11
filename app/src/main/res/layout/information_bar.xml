@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/informationBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,10 +18,18 @@
             android:id="@+id/locationNametextView"
             android:layout_width="375dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="41dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:text="@string/LocationNamePlaceholder"
             android:textColor="#FFFFFF"
             android:textSize="30sp"
-            android:translationX="20dp"
+            android:translationX="-25dp"
             android:translationY="10dp" />
 
         <!--START BUTTON-->
@@ -30,16 +39,16 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
 
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
+            android:layout_toStartOf="@+id/callButton"
+            android:layout_toLeftOf="@+id/callButton"
             android:background="@drawable/custom_button"
             android:text="@string/StartButtonText"
             android:textColor="@color/stmarydarkblue"
             android:textColorHighlight="@color/stmaryblue"
-            android:translationX="150dp"
+            android:translationX="28dp"
             android:translationY="100dp" />
 
         <!--CALL BUTTON-->
@@ -49,29 +58,29 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
 
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="19dp"
+            android:layout_marginRight="19dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/custom_button"
             android:text="@string/CallButtonText"
             android:textColor="@color/stmarydarkblue"
             android:textColorHighlight="@color/stmaryblue"
-            android:translationX="283dp"
+            android:translationX="10dp"
             android:translationY="100dp" />
 
         <!--DIRECTIONS BUTTON-->
         <Button
             android:id="@+id/directButton"
             style="buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="121dp"
             android:layout_height="35dp"
 
-            android:layout_marginStart="120dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/custom_button"
             android:paddingLeft="20dp"
@@ -79,7 +88,7 @@
             android:text="@string/DirectionsButtonText"
             android:textColor="@color/stmarydarkblue"
             android:textColorHighlight="@color/stmaryblue"
-            android:translationX="-100dp"
+            android:translationX="-10dp"
             android:translationY="100dp" />
 
     </RelativeLayout>

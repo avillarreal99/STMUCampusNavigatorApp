@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.health.SystemHealthManager;
 import android.view.KeyEvent;
@@ -47,6 +48,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -74,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String selectedLocationName;          // globals for information bar
     private String selectedLocationPhoneNumber;   // globals for information bar
     private LatLng selectedLocationLatLng;        // globals for information bar
+    private BottomSheetBehavior informationBarBehavior;
     Location userCurrentLocation;        // for use in directions Button
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
@@ -87,6 +91,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //initialize and hide information bar when app first runs
+        View bottomSheet = findViewById(R.id.informationBar);
+        informationBarBehavior = BottomSheetBehavior.from(bottomSheet);
+        setInfoBarState("collapse");
     }
 
     @Override
@@ -102,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeMarkerListener();
         initializeUPDButton();
         initializeDirectionsButton();
-        //initializeCallButton();
+        initializeCallButton();
         //initializeStartButton();
 
         // Limit the map screen to only display St. Mary's
@@ -243,7 +252,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // SEARCH BAR METHODS -----------------------------------------------------------------------------------------------------------------------------
 
-    // initializes and listens for activity in SearchBar (By Amanda Villarreal, Alex Montes, Darren Griffen)
+    // initializes and listens for activity in SearchBar (By Amanda Villarreal, Alex Montes, and Darren Griffen)
     private void initializeSearchBar() //test success
     {
         //New Search Bar Function
@@ -268,6 +277,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if((actionId == EditorInfo.IME_ACTION_SEARCH) || (actionId == EditorInfo.IME_ACTION_DONE)
                         || (event.getAction() == KeyEvent.ACTION_DOWN) || (event.getAction() == KeyEvent.KEYCODE_ENTER))
                 {
+                    setInfoBarState("collapse");
+                    hideKeyboard();
                     stmu_search.dismissDropDown(); //get rid of drop down bar
                     searchCampusLocation(stmu_search.getText().toString(), false); //search for campus locations
                 }
@@ -292,9 +303,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         selectedLocationPhoneNumber = location.getPhoneNumber();
                         selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
+                        stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLocationLatLng, 17f));
                     }
                 }
                 hideKeyboard();
+                setInfoBarState("expand");
                 searchCampusLocation(adapter.getItem(position), false); //search for specific location
             }
         });
@@ -304,7 +317,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void searchCampusLocation(String searchText, boolean searchingByCategory)
     {
         stmuMap.clear(); // empty map of all markers
-
         // search for a match between the user's inputted string and a campus location
         for(CampusLocation location : campusLocationsList)
         {
@@ -373,6 +385,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onClick(View bttn)
     {
+        setInfoBarState("collapse"); //hide info bar
+        stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15f));
         //Searches for campus location based on the location category that was selected
         switch (bttn.getId())
         {
@@ -424,7 +438,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // UPD BUTTON METHODS-----------------------------------------------------------------------------------------------------------------------------
 
-    // listens for button click for UPD button, initializes all global location variables to values of UPD
+    // listens for button click for UPD button, initializes all global location variables to values of UPD (By Amanda Villarreal)
     public void initializeUPDButton()
     {
         Button UPDButton = findViewById(R.id.UPD);
@@ -476,6 +490,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
                     }
                 }
+                setInfoBarState("expand");
                 informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
                 return false;
             }
@@ -523,7 +538,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    // initializes call button in Information Bar
+    // initializes call button in Information Bar (By Alex Montes)
     public void initializeCallButton()
     {
         Button callButton = findViewById(R.id.callButton);
@@ -532,7 +547,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
-                // fill body here with call functionality
+                //if phone number exists
+                if(!selectedLocationPhoneNumber.equals("NULL"))
+                {
+                    Intent call = new Intent(Intent.ACTION_DIAL);
+
+                    //parse the telephone number ("tel:" is needed to avoided errors)
+                    call.setData(Uri.parse("tel:" + selectedLocationPhoneNumber));
+                    startActivity(call);
+                }
+                else
+                {
+                    AlertDialog.Builder noNumberAlert = new AlertDialog.Builder(MapsActivity.this);
+
+                    noNumberAlert.setTitle("No Phone Number Found");
+                    noNumberAlert.setMessage("This location has no phone number");
+                    noNumberAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+                    noNumberAlert.show();
+                }
+
             }
         });
     }
@@ -551,6 +584,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    //set the state of the information bar (By Alex Montes)
+    public void setInfoBarState(String state)
+    {
+        state = state.toLowerCase(); //just in case
+
+        switch (state) {
+            case "expand":
+                informationBarBehavior.setPeekHeight(150);
+                informationBarBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                break;
+            case "collapse":
+                informationBarBehavior.setPeekHeight(0);
+                informationBarBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                break;
+            default:
+                System.out.println("invalid state: Throw an error later");
+        }
+    }
 
     // DIRECTIONS METHODS -----------------------------------------------------------------------------------------------------------------------------
 

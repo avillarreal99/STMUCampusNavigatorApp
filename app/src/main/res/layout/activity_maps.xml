@@ -103,6 +103,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+                <!--Academics Button -->
                 <Button
                     android:id="@+id/academicsButton"
                     style="buttonBarButtonStyle"
@@ -120,6 +121,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Amenities Button -->
                 <Button
                     android:id="@+id/amenitiesButton"
                     style="buttonBarButtonStyle"
@@ -137,6 +139,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Athletics Button -->
                 <Button
                     android:id="@+id/athleticsButton"
                     style="buttonBarButtonStyle"
@@ -154,6 +157,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Food Button -->
                 <Button
                     android:id="@+id/foodButton"
                     style="buttonBarButtonStyle"
@@ -171,6 +175,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Gathering Button -->
                 <Button
                     android:id="@+id/gatheringButton"
                     style="buttonBarButtonStyle"
@@ -188,6 +193,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Library Button -->
                 <Button
                     android:id="@+id/libraryButton"
                     style="buttonBarButtonStyle"
@@ -205,6 +211,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Parking Button -->
                 <Button
                     android:id="@+id/parkingButton"
                     style="buttonBarButtonStyle"
@@ -222,6 +229,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Residence Button -->
                 <Button
                     android:id="@+id/residenceButton"
                     style="buttonBarButtonStyle"
@@ -239,6 +247,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Sacred Button -->
                 <Button
                     android:id="@+id/sacredButton"
                     style="buttonBarButtonStyle"
@@ -256,6 +265,7 @@
                     android:textColor="@color/stmarydarkblue"
                     android:translationY="10dp" />
 
+                <!--Safety Button -->
                 <Button
                     android:id="@+id/safetyButton"
                     style="buttonBarButtonStyle"
@@ -278,11 +288,14 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp">
 
             <include
-                layout="@layout/navigation_bar">
-
+                layout="@layout/information_bar">
             </include>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
