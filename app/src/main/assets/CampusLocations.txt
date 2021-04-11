@@ -2,7 +2,7 @@ Starbucks,29.45302,-98.5629,2104312202,Food
 Chick-fil-a,29.45245,-98.56285,2104363750,Food
 Diamondback Cafe,29.45258,-98.56273,NULL,Food
 The POD,29.45363,-98.56201,NULL,Food
-Subway,29.45355,-9856212,2104363334,Food
+Subway,29.45355,-98.56212,2104363334,Food
 The Pub,29.45338,-98.56292,NULL,Food
 Charles L. Cotrell Learning Commons,29.45296,-98.56263,NULL,Library
 Louis J. Blume Library,29.45317,-98.56239,NULL,Library
