@@ -78,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String selectedLocationPhoneNumber;   // globals for information bar
     private LatLng selectedLocationLatLng;        // globals for information bar
     private BottomSheetBehavior informationBarBehavior;
+    private boolean normalMap = true;
     Location userCurrentLocation;        // for use in directions Button
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
@@ -112,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeUPDButton();
         initializeDirectionsButton();
         initializeCallButton();
+        initializeMapModeButton();
         //initializeStartButton();
 
         // Limit the map screen to only display St. Mary's
@@ -121,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //  move the camera to StMU
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15f));  // Zoom in on STMU (1 for world, 15 for streets, 20 for buildings)
+
 
         // Use intent to signal to system that location is being requested
         Intent intent = getIntent();
@@ -154,6 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+
 
 
     // SETTING UP CAMPUSLOCATIONSLIST METHODS -----------------------------------------------------------------------------------------------------------
@@ -247,6 +251,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 centerMapOnLocation(lastKnownLocation,"User Location");
             }
         }
+    }
+
+    //initializes and listens for the map mode button press (By Alex Montes)
+    private void initializeMapModeButton() {
+       Button mapMode = findViewById(R.id.mapMode);
+
+        mapMode.setOnClickListener(new View.OnClickListener() //listens for button click
+        {
+            public void onClick(View v)
+            {
+                //if current map mode on normal mode
+                if(normalMap)
+                {
+                    normalMap = false; //no longer on normal map mode
+                    stmuMap.setMapType(GoogleMap.MAP_TYPE_HYBRID); //change map mode
+                }
+                else //not on normal map mode
+                {
+                    normalMap = true; //on normal map mode
+                    stmuMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); //change map mode
+                }
+
+            }
+        });
     }
 
 
@@ -513,8 +541,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
-                LatLng userLocation = new LatLng(userCurrentLocation.getLatitude(), userCurrentLocation.getLongitude());
-                /*
                 if(userCurrentLocation == null)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
@@ -525,7 +551,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println("location not enabled");
                 }
                 else
-                { */
+                {
+                    LatLng userLocation = new LatLng(userCurrentLocation.getLatitude(), userCurrentLocation.getLongitude());
+
                     // make a request for polyline
                     stmuMap.clear();
                     stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
@@ -533,7 +561,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15.5f));
                     String url = getDirectionsURL(userLocation, selectedLocationLatLng, "walking");
                     new FetchURL(MapsActivity.this).execute(url, "walking");  // create a directions request
-                //}
+                }
             }
         });
     }

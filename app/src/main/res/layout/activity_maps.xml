@@ -67,6 +67,27 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
 
+        
+        <Button
+            android:id="@+id/mapMode"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/recenterButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="150dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="474dp"
+            android:translationY="225dp"
+            android:background="@drawable/recenter_button_background"
+            android:drawableStart="@android:drawable/ic_menu_mapmode"
+            android:drawableLeft="@android:drawable/ic_menu_mapmode"
+            android:drawableTint="@color/stmarydarkblue"
+            android:paddingStart="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"/>
+
         <!-- RECENTER BUTTON: the drawableTint attribute will only occur in API lvl 23 or higher-->
         <Button
             android:id="@+id/recenterButton"
