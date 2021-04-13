@@ -541,8 +541,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
-                LatLng userLocation = new LatLng(userCurrentLocation.getLatitude(), userCurrentLocation.getLongitude());
-                /*
                 if(userCurrentLocation == null)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
@@ -553,7 +551,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println("location not enabled");
                 }
                 else
-                { */
+                {
+                    LatLng userLocation = new LatLng(userCurrentLocation.getLatitude(), userCurrentLocation.getLongitude());
+
                     // make a request for polyline
                     stmuMap.clear();
                     stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
@@ -561,7 +561,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15.5f));
                     String url = getDirectionsURL(userLocation, selectedLocationLatLng, "walking");
                     new FetchURL(MapsActivity.this).execute(url, "walking");  // create a directions request
-                //}
+                }
             }
         });
     }
