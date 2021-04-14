@@ -151,8 +151,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 userCurrentLocation = lastKnownLocation;
-                System.out.print("Your location: ");
-                System.out.println(userCurrentLocation);
                 initalizeRecenterbutton(lastKnownLocation);
             }
         }
@@ -226,6 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else  //recenter map
         {
+            setInfoBarState("collapse");  // close information bar in case it's open
             LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
             stmuMap.clear();
             stmuMap.addMarker(new MarkerOptions().position(userLocation).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).showInfoWindow();
@@ -409,7 +408,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         safetyBttn.setOnClickListener(this);
     }
 
-    //Function that determines what the specified button does (By Alex Montes)
+    //Function that determines what the specified Scroll Button does (By Alex Montes)
     @Override
     public void onClick(View bttn)
     {
@@ -489,6 +488,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         // add a marker of only UPD on map
                         stmuMap.clear();
                         stmuMap.addMarker(new MarkerOptions().position(selectedLocationLatLng).title(selectedLocationName)).showInfoWindow();
+                        stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLocationLatLng, 17f));
+                        setInfoBarState("expand");
                     }
                 }
             }
