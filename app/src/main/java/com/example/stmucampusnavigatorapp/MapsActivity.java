@@ -114,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeDirectionsButton();
         initializeCallButton();
         initializeMapModeButton();
-        //initializeStartButton();
+        initializeStartButton();
 
         // Limit the map screen to only display St. Mary's
         final LatLngBounds STMU = new LatLngBounds(new LatLng(29.44945207195666, -98.56892350439986), new LatLng(29.454954521268178, -98.56024923502343)); // Create a LatLngBounds that includes St. Mary's University in United States.
@@ -588,7 +588,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 else
                 {
                     AlertDialog.Builder noNumberAlert = new AlertDialog.Builder(MapsActivity.this);
-
                     noNumberAlert.setTitle("No Phone Number Found");
                     noNumberAlert.setMessage("This location has no phone number");
                     noNumberAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
@@ -599,7 +598,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    // initializes start button in Information Bar
+    // initializes start button in Information Bar (By Amanda Villarreal)
     public void initializeStartButton()
     {
         Button callButton = findViewById(R.id.startButton);
@@ -608,7 +607,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
-                // fill body here with start functionality
+                // will be sent into Uri.parse as the user's destination
+                String destinationCoordinates = selectedLocationLatLng.latitude + "," + selectedLocationLatLng.latitude;
+
+                // create the intent to navigate to destination, sent intent to Google
+                Intent navigationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + destinationCoordinates + "&mode=w"));
+                navigationIntent.setPackage("com.google.android.apps.maps");
+
+                // make sure the user has Google Maps App installed on their device
+                if(navigationIntent.resolveActivity(getPackageManager()) != null)
+                {
+                    // start navigation through Google Maps
+                    startActivity(navigationIntent);
+                }
+                else
+                {
+                    // display an Alert Dialog to download google maps
+                    AlertDialog.Builder googleMapsAlert = new AlertDialog.Builder(MapsActivity.this);
+                    googleMapsAlert.setTitle("Cannot Start Navigation");
+                    googleMapsAlert.setMessage("This device does not have Google Maps installed. To use this feature, this device must have Google Maps installed, please install and try again!");
+                    googleMapsAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+                    googleMapsAlert.show();
+                }
             }
         });
     }
