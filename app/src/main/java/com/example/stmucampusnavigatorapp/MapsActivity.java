@@ -608,7 +608,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 // will be sent into Uri.parse as the user's destination
-                String destinationCoordinates = selectedLocationLatLng.latitude + "," + selectedLocationLatLng.latitude;
+                String destinationCoordinates = selectedLocationLatLng.latitude + "," + selectedLocationLatLng.longitude;
 
                 // create the intent to navigate to destination, sent intent to Google
                 Intent navigationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + destinationCoordinates + "&mode=w"));
