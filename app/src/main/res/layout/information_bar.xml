@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/locationNametextView"
-            android:layout_width="375dp"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
@@ -24,13 +24,13 @@
             android:layout_alignParentRight="true"
             android:layout_marginStart="41dp"
             android:layout_marginLeft="41dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginRight="80dp"
             android:text="@string/LocationNamePlaceholder"
             android:textColor="#FFFFFF"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:translationX="-25dp"
-            android:translationY="10dp" />
+            android:translationY="15dp" />
 
         <!--START BUTTON-->
         <Button
@@ -98,12 +98,18 @@
             style="buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="328dp"
+            android:layout_marginRight="328dp"
             android:background="@drawable/custom_button"
             android:text="@string/Pictures"
             android:textColor="@color/stmarydarkblue"
             android:textColorHighlight="@color/stmaryblue"
-            android:translationX="295dp"
-            android:translationY="55dp" />
+            android:translationX="317dp"
+            android:translationY="-40dp" />
 
     </RelativeLayout>
 

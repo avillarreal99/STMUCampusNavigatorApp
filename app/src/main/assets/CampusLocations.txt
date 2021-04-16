@@ -82,6 +82,7 @@ Chaminade Tower,29.45234,-98.56136,NULL,Amenities
 University Police Department (UPD),29.45482,-98.5634,2104311911,Safety
 Student Health Center,29.45179,-98.56143,2104363506,Safety
 Student Counseling Center,29.4536,-98.56372,2104363135,Safety
+COVID-19 Testing Kiosk,29.4545,-98.56558,NULL,Safety
 Barrett Memorial Bell Tower,29.45264,-98.56217,NULL,Gathering
 Contreras Family Terrace,29.45313,-98.56309,NULL,Gathering
 Alkek Plaza,29.45327,-98.56352,NULL,Gathering

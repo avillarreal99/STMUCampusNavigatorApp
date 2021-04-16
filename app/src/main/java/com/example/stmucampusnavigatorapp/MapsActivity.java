@@ -337,6 +337,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 hideKeyboard();
                 setInfoBarState("expand");
+
+                // if the COVID testing kiosk is selected
+                if (selectedLocationName.contains("COVID"))
+                {
+                    covid19AlertDialog();  // display info on COVID
+                }
+
                 searchCampusLocation(adapter.getItem(position), false); //search for specific location
             }
         });
@@ -511,6 +518,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 selectedLocationName = marker.getTitle();
 
+                // if the COVID testing kiosk is selected
+                if (selectedLocationName.contains("COVID"))
+                {
+                    covid19AlertDialog();  // display info on COVID
+                }
 
                 // Find the selected marker's LatLng and phone number, and store the global values for later use
                 for(CampusLocation location : campusLocationsList)
@@ -627,7 +639,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // display an Alert Dialog to download google maps
                     AlertDialog.Builder googleMapsAlert = new AlertDialog.Builder(MapsActivity.this);
                     googleMapsAlert.setTitle("Cannot Start Navigation");
-                    googleMapsAlert.setMessage("This device does not have Google Maps installed. To use this feature, this device must have Google Maps installed, please install and try again!");
+                    googleMapsAlert.setMessage("To use this feature, this device must have Google Maps installed. Please visit " +
+                                               "the Google Play Store on this device, search for the Google Maps app, and install it.");
                     googleMapsAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
                     googleMapsAlert.show();
                 }
@@ -719,5 +732,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // draw new polyline
         directionalPolyline = stmuMap.addPolyline((PolylineOptions) values[0]);
 
+    }
+
+    public void covid19AlertDialog()
+    {
+        // display an Alert Dialog to mention COVID-19
+        AlertDialog.Builder googleMapsAlert = new AlertDialog.Builder(MapsActivity.this);
+        googleMapsAlert.setTitle("COVID-19 Information for your Safety");
+        googleMapsAlert.setMessage(" StMU has partnered with Curative, Inc., to provide free COVID-19 testing for our campus community. " +
+                                   "Our kiosk in Lot D offers no-cost, contactless, self-administered COVID-19 testing. Testing is available by " +
+                                   "appointment from 8 a.m. to 6 p.m. on weekdays until May 15, 2021. COVID-19 test results are estimated to be " +
+                                   "available in 36-48 hours. Anyone already with COVID-19 symptoms is asked to contact your physician before " +
+                                   "using the kiosk. For those not displaying symptoms, appointments for testing at the kiosk can be " +
+                                   "made through the Curative website.");
+
+        googleMapsAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+        googleMapsAlert.show();
     }
 }
