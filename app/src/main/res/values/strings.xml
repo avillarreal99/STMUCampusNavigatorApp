@@ -20,4 +20,5 @@
     <string name="CallButtonText">Call</string>
     <string name="LocationNamePlaceholder">Location Name</string>
     <string name="STMUAppName">STMU Campus Navigator</string>
+    <string name="Pictures">Pictures</string>
 </resources>

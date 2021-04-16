@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import com.example.stmucampusnavigatorapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -115,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initializeCallButton();
         initializeMapModeButton();
         initializeStartButton();
+        initializePictureButton();
 
         // Limit the map screen to only display St. Mary's
         final LatLngBounds STMU = new LatLngBounds(new LatLng(29.44945207195666, -98.56892350439986), new LatLng(29.454954521268178, -98.56024923502343)); // Create a LatLngBounds that includes St. Mary's University in United States.
@@ -610,7 +612,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // will be sent into Uri.parse as the user's destination
                 String destinationCoordinates = selectedLocationLatLng.latitude + "," + selectedLocationLatLng.longitude;
 
-                // create the intent to navigate to destination, sent intent to Google
+                // create the intent to navigate to destination, send intent to Google
                 Intent navigationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + destinationCoordinates + "&mode=w"));
                 navigationIntent.setPackage("com.google.android.apps.maps");
 
@@ -628,6 +630,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     googleMapsAlert.setMessage("This device does not have Google Maps installed. To use this feature, this device must have Google Maps installed, please install and try again!");
                     googleMapsAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
                     googleMapsAlert.show();
+                }
+            }
+        });
+    }
+
+    // Initialization of the picture button (by Joe Flores)
+    public void initializePictureButton()
+    {
+        //Declaration of the buttons and scroll
+        Button pictureBttn    = findViewById(R.id.PictureButton);
+        HorizontalScrollView pictureScroll   = findViewById(R.id.PictureScroll);
+        pictureBttn.setOnClickListener(this);
+        pictureScroll.setOnClickListener(this);
+
+        //Sets the scroll to be GONE and take up no space unless called upon when user clicks button
+        pictureScroll.setVisibility(View.GONE);
+        pictureScroll.setClickable(false);
+
+        pictureBttn.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                //  make the picture scroll become visible as long as it was invisible to begin with
+                if(pictureScroll.getVisibility()==View.GONE)
+                {
+                    pictureScroll.setVisibility(View.VISIBLE);
+                    pictureScroll.setClickable(true);
+                }
+                else // makes it go back to invisible when clicked again
+                {
+                    pictureScroll.setVisibility(View.GONE);
+                    pictureScroll.setClickable(false);
                 }
             }
         });

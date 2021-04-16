@@ -91,6 +91,20 @@
             android:translationX="-10dp"
             android:translationY="100dp" />
 
+        <!--PICTURES BUTTON-->
+        <!--Could be put elsewhere if it gets in way or just looks bad-->
+        <Button
+            android:id="@+id/PictureButton"
+            style="buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/custom_button"
+            android:text="@string/Pictures"
+            android:textColor="@color/stmarydarkblue"
+            android:textColorHighlight="@color/stmaryblue"
+            android:translationX="295dp"
+            android:translationY="55dp" />
+
     </RelativeLayout>
 
 

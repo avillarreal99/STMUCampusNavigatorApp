@@ -307,6 +307,73 @@
             </LinearLayout>
         </HorizontalScrollView>
 
+        <!--Can be moved around or fixed to look cleaner-->
+        <!--Pictures that are in this scroll were test pictures, in order for it to appear they need to be added to the drawable folder and reinitialized in the srcCompat-->
+        <HorizontalScrollView
+            android:id="@+id/PictureScroll"
+            android:layout_width="match_parent"
+            android:layout_height="402dp"
+            android:translationY="165dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/chickfilaImageView"
+                    android:layout_width="410dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/chick_fil_a"
+                    app:srcCompat="@drawable/chick_fil_a" />
+
+                <ImageView
+                    android:id="@+id/diamondbackCafeImageView"
+                    android:layout_width="410dp"
+                    android:layout_height="410dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/diamondback_cafe_a"
+                    app:srcCompat="@drawable/diamondback_cafe_a" />
+
+                <ImageView
+                    android:id="@+id/starbucksImageView"
+                    android:layout_width="410dp"
+                    android:layout_height="402dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/starbucks_a"
+                    app:srcCompat="@drawable/starbucks_a" />
+
+                <ImageView
+                    android:id="@+id/subwayImageView"
+                    android:layout_width="410dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:rotation="0"
+                    android:src="@drawable/subway"
+                    app:srcCompat="@drawable/subway" />
+
+                <ImageView
+                    android:id="@+id/thePODImageView"
+                    android:layout_width="410dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/the_pod"
+                    app:srcCompat="@drawable/the_pod" />
+
+                <ImageView
+                    android:id="@+id/thePubImageView"
+                    android:layout_width="410dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/the_pub_a"
+                    app:srcCompat="@drawable/the_pub_a" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
