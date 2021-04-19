@@ -533,8 +533,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         selectedLocationLatLng = new LatLng(Float.parseFloat(location.getLatitude()), Float.parseFloat(location.getLongitude()));
                     }
                 }
-                setInfoBarState("expand");
-                informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
+
+                if (selectedLocationName.equals("You are here!")) // make user's location un-selectable
+                {
+                    setInfoBarState("collapse");  // do not display info bar
+                }
+                else
+                {
+                    setInfoBarState("expand");
+                    informationBarLocationName.setText(selectedLocationName); // change Location Name Text View to selected marker name
+                }
                 return false;
             }
         });
