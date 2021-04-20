@@ -35,6 +35,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.stmucampusnavigatorapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -106,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("App is ready");
         // MAP SET UP
         stmuMap = googleMap;
-        informationBarLocationName = (TextView) findViewById(R.id.locationNametextView);  // initialize location's displayed name in Information Bar
+        informationBarLocationName = findViewById(R.id.locationNametextView);  // initialize location's displayed name in Information Bar
         initializeCampusLocationsList();
         initializeSearchBar();
         initializeScrollButtons();
@@ -748,5 +749,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMapsAlert.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
         googleMapsAlert.show();
+    }
+
+    public void showLocationPictures()
+    {
+        LinearLayout linearLayout = findViewById(R.id.locationImages);
+
+        for(CampusLocation location : campusLocationsList){
+            if(location.getLocationName().contains(informationBarLocationName.toString()))
+            {
+                String locationName = location.getLocationName();
+                //locationName
+                //how this will work
+                /*
+                     1.Will turn locationName to lowercase and get rid of white space
+                     2.search for the folder containing the images (on google drive)
+                     3.check if the locationName matches the file name (This will try to FIND any matches of the location name in the file name)
+                     */
+            }
+        }
+
     }
 }

@@ -67,7 +67,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
 
-        
+        <!-- MAP MODE BUTTON -->
         <Button
             android:id="@+id/mapMode"
             android:layout_width="40dp"
@@ -318,6 +318,7 @@
             tools:visibility="visible">
 
             <LinearLayout
+                android:id="@+id/locationImages"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
