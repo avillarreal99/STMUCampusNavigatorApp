@@ -18,11 +18,15 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.health.SystemHealthManager;
 import android.view.KeyEvent;
@@ -35,8 +39,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.example.stmucampusnavigatorapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,6 +63,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private BottomSheetBehavior informationBarBehavior;
     private boolean normalMap = true;
     Location userCurrentLocation;        // for use in directions Button
+    ImageView image2;
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,6 +108,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         View bottomSheet = findViewById(R.id.informationBar);
         informationBarBehavior = BottomSheetBehavior.from(bottomSheet);
         setInfoBarState("collapse");
+        image2 = findViewById(R.id.chickfilaImageView);
+
     }
 
     @Override
@@ -671,6 +682,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     pictureScroll.setVisibility(View.VISIBLE);
                     pictureScroll.setClickable(true);
+                    image2.setImageBitmap(null);
+                    showLocationPictures();
                 }
                 else // makes it go back to invisible when clicked again
                 {
@@ -751,23 +764,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMapsAlert.show();
     }
 
-    public void showLocationPictures()
+    public void showLocationPictures() {
+
+    }
+
+    //the bottom commented code were plans to get campus pictures from an online URL. Left for future work
+    /*
+    public void showOnlineLocationPictures()
     {
         LinearLayout linearLayout = findViewById(R.id.locationImages);
 
+        LoadImage loadImage = new LoadImage(image2);
+        loadImage.execute("https://i.imgur.com/AxbXf23.jpg");
         for(CampusLocation location : campusLocationsList){
             if(location.getLocationName().contains(informationBarLocationName.toString()))
             {
                 String locationName = location.getLocationName();
-                //locationName
+                String URL = "";
+                ImageView image = new ImageView(this);
+
                 //how this will work
-                /*
-                     1.Will turn locationName to lowercase and get rid of white space
+                     1.Turn locationName to lowercase and get rid of white space
                      2.search for the folder containing the images (on google drive)
                      3.check if the locationName matches the file name (This will try to FIND any matches of the location name in the file name)
-                     */
+
             }
         }
 
     }
+
+    private class LoadImage extends AsyncTask<String, Void, Bitmap> {
+        ImageView imageView;
+        public LoadImage(ImageView ivResult){
+            this.imageView = ivResult;
+        }
+
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            String urlLink = strings[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream inputStream = new java.net.URL(urlLink).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            image2.setImageBitmap(bitmap);
+        }
+    }
+    */
 }
