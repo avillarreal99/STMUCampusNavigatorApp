@@ -313,7 +313,7 @@
             android:id="@+id/PictureScroll"
             android:layout_width="match_parent"
             android:layout_height="402dp"
-            android:translationY="165dp"
+            android:translationY="145dp"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -322,14 +322,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/chickfilaImageView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-
 
             </LinearLayout>
         </HorizontalScrollView>

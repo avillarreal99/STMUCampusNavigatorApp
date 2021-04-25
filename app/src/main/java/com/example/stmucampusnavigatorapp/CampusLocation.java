@@ -4,6 +4,9 @@
 
 package com.example.stmucampusnavigatorapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CampusLocation
 {
     private String location;
@@ -11,6 +14,7 @@ public class CampusLocation
     private String latitude;
     private String category;
     private String phoneNumber; // 0 or NULL (No phone number available)
+    private List pictures;
 
     public CampusLocation(String locationName, String latitudeCoord, String longitudeCoord, String locationPhoneNum, String  locationCategory)
     {

@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,10 +26,12 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.health.SystemHealthManager;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -81,6 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView informationBarLocationName;        // Location name displayed in Information Bar
     private List<String> locationNameList = new ArrayList<String>();              // what is this for?
     private List<CampusLocation> campusLocationsList = new ArrayList<CampusLocation>();   // to hold campus locations
+    private List<String> locationPictures = new ArrayList<>();
     Polyline directionalPolyline;        // draws directions
     LocationManager locationManager;     // for getting user location
     LocationListener locationListener;   // for getting user location
@@ -90,7 +94,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private BottomSheetBehavior informationBarBehavior;
     private boolean normalMap = true;
     Location userCurrentLocation;        // for use in directions Button
-    ImageView image2;
 
     // MAP SCREEN METHODS --------------------------------------------------------------------------------------------------------------------------------
 
@@ -108,7 +111,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         View bottomSheet = findViewById(R.id.informationBar);
         informationBarBehavior = BottomSheetBehavior.from(bottomSheet);
         setInfoBarState("collapse");
-        image2 = findViewById(R.id.chickfilaImageView);
 
     }
 
@@ -120,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stmuMap = googleMap;
         informationBarLocationName = findViewById(R.id.locationNametextView);  // initialize location's displayed name in Information Bar
         initializeCampusLocationsList();
+        initializeLocationPicturesList();
         initializeSearchBar();
         initializeScrollButtons();
         initializeMarkerListener();
@@ -196,6 +199,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CampusLocation campusLocationObj = new CampusLocation(val0, val1, val2, val3, val4); //Creates new object for each row of the .txt file
                 campusLocationsList.add(campusLocationObj); //stores all locations into an ArrayList.
             }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    //Sets up the LocationPictures ArrayList by reading from our assets file
+    private void initializeLocationPicturesList()
+    {
+        // read text from asset LocationPictureNames.txt and store in an object of CampusLocation; add each CampusLocation to campusLocationsList
+        try
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("LocationPictureNames")));
+            String line;
+
+            while((line = br.readLine()) != null) // reads each line of the .txt file
+            {
+
+                locationPictures.add(line); //stores all locations pictures into an ArrayList.
+            }
+            System.out.println(locationPictures);
         }
         catch (FileNotFoundException e)
         {
@@ -690,11 +719,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     pictureScroll.setVisibility(View.VISIBLE);
                     pictureScroll.setClickable(true);
-                    image2.setImageBitmap(null);
                     showLocationPictures();
                 }
                 else // makes it go back to invisible when clicked again
                 {
+                    LinearLayout linearLayout = findViewById(R.id.locationImages);
+                    linearLayout.removeAllViews();
                     pictureScroll.setVisibility(View.GONE);
                     pictureScroll.setClickable(false);
                 }
@@ -773,7 +803,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showLocationPictures() {
+        LinearLayout linearLayout = findViewById(R.id.locationImages);
+        String infoBarText = "";
+        int imageID = 0; //holds image file ID
 
+        //following three lines gets rid of white spaces, special chars, and turns to lower case of the info bar text
+        infoBarText = informationBarLocationName.getText().toString().replaceAll("\\s", "");
+        infoBarText = infoBarText.replaceAll("[-.'&/]", "");
+        infoBarText = infoBarText.toLowerCase();
+
+
+
+        for(String campusLocation : locationPictures) //go through all pictures
+        {
+            if(campusLocation.contains(infoBarText)) //if picture name matches location name
+            {
+
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1.0f);
+                param.setMargins(40, 0, 40, 200);
+                imageID = getImage(campusLocation); //get id of the resource from the drawable folder
+                ImageView imageView = new ImageView(MapsActivity.this);
+                imageView.setLayoutParams(param);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                //getDrawable() is deprecated and needs this
+                @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = getResources().getDrawable(imageID);
+                imageView.setImageDrawable(drawable);
+                linearLayout.addView(imageView);
+            }
+        }
+
+
+        //campusPictures.setImageDrawable(drawable); //set the image of the imageView
+    }
+
+    //function that looks for a specified resource in the drawable's folder
+    private int getImage(String imageName){
+        //holds the id of the resource
+        int drawableResourceID = this.getResources().getIdentifier(imageName, "drawable", this.getPackageName());
+
+        return drawableResourceID;
     }
 
     //the bottom commented code were plans to get campus pictures from an online URL. Left for future work
