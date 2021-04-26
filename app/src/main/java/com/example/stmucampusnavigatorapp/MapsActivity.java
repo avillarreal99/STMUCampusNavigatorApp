@@ -11,6 +11,7 @@
 package com.example.stmucampusnavigatorapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -29,6 +30,7 @@ import android.location.LocationManager;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.health.SystemHealthManager;
 import android.view.Gravity;
@@ -72,6 +74,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 import android.app.AlertDialog;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, TaskLoaderCallBack, GoogleMap.OnMarkerClickListener
@@ -329,6 +333,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stmu_search = findViewById(R.id.stmu_search);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MapsActivity.this, android.R.layout.simple_list_item_1, locationNameList); //test success
         stmu_search.setAdapter(adapter); //test success
+        HorizontalScrollView pictureScroll = findViewById(R.id.PictureScroll);
+
 
         //Darren Comment
         for(CampusLocation location : campusLocationsList)
@@ -336,6 +342,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationNameList.add(location.getLocationName());
         }
 
+        stmu_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setInfoBarState("collapse");
+                
+                if(pictureScroll.getVisibility()==View.VISIBLE)
+                {
+                    pictureScroll.setVisibility(View.GONE);
+                    showButtons(findViewById(R.id.mapMode), findViewById(R.id.recenterButton));
+                }
+            }
+        });
 
         //Listens for key press
         stmu_search.setOnEditorActionListener(new TextView.OnEditorActionListener()
@@ -347,7 +365,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if((actionId == EditorInfo.IME_ACTION_SEARCH) || (actionId == EditorInfo.IME_ACTION_DONE)
                         || (event.getAction() == KeyEvent.ACTION_DOWN) || (event.getAction() == KeyEvent.KEYCODE_ENTER))
                 {
-                    setInfoBarState("collapse");
                     hideKeyboard();
                     stmu_search.dismissDropDown(); //get rid of drop down bar
                     searchCampusLocation(stmu_search.getText().toString(), false); //search for campus locations
@@ -365,6 +382,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // store location name globally
                 selectedLocationName = adapter.getItem(position);
                 informationBarLocationName.setText(selectedLocationName);
+
 
                 // Find the selected drop-down's LatLng and phone number, and store the global values for later use
                 for(CampusLocation location : campusLocationsList)
@@ -462,8 +480,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onClick(View bttn)
     {
+        HorizontalScrollView pictureScroll = findViewById(R.id.PictureScroll);
         setInfoBarState("collapse"); //hide info bar
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15f));
+
+        if(pictureScroll.getVisibility()==View.VISIBLE)
+        {
+            pictureScroll.setVisibility(View.GONE);
+            showButtons(findViewById(R.id.mapMode), findViewById(R.id.recenterButton));
+        }
+
         //Searches for campus location based on the location category that was selected
         switch (bttn.getId())
         {
@@ -510,6 +536,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             default:
                 System.out.println("Invalid button press");
         }
+
     }
 
 
@@ -519,11 +546,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void initializeUPDButton()
     {
         Button UPDButton = findViewById(R.id.UPD);
+        HorizontalScrollView pictureScroll = findViewById(R.id.PictureScroll);
 
         UPDButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
+                if(pictureScroll.getVisibility()==View.VISIBLE)
+                {
+                    pictureScroll.setVisibility(View.GONE);
+                    showButtons((Button) findViewById(R.id.mapMode), (Button) findViewById(R.id.recenterButton));
+                }
+
                 // search through campus locations to find UPD
                 for(CampusLocation location : campusLocationsList)
                 {
@@ -701,8 +735,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void initializePictureButton()
     {
         //Declaration of the buttons and scroll
-        Button pictureBttn    = findViewById(R.id.PictureButton);
-        HorizontalScrollView pictureScroll   = findViewById(R.id.PictureScroll);
+        Button pictureBttn = findViewById(R.id.PictureButton);
+        Button mapModeBttn = findViewById(R.id.mapMode);
+        Button recenterBttn = findViewById(R.id.recenterButton);
+        HorizontalScrollView pictureScroll = findViewById(R.id.PictureScroll);
         pictureBttn.setOnClickListener(this);
         pictureScroll.setOnClickListener(this);
 
@@ -719,6 +755,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     pictureScroll.setVisibility(View.VISIBLE);
                     pictureScroll.setClickable(true);
+                    hideButtons(mapModeBttn, recenterBttn);
                     showLocationPictures();
                 }
                 else // makes it go back to invisible when clicked again
@@ -727,9 +764,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     linearLayout.removeAllViews();
                     pictureScroll.setVisibility(View.GONE);
                     pictureScroll.setClickable(false);
+                    showButtons(mapModeBttn, recenterBttn);
                 }
             }
         });
+    }
+
+    //function that hides and disables an n amount of buttons passed in
+    private void hideButtons(Button ... buttons)
+    {
+
+        for(Button bttn : buttons)
+        {
+            bttn.setVisibility(View.GONE);
+            bttn.setClickable(false);
+        }
+    }
+
+    //function that shows and enables an n amount of buttons passed in
+    private void showButtons(Button ... buttons)
+    {
+        for(Button bttn : buttons)
+        {
+            bttn.setVisibility(View.VISIBLE);
+            bttn.setClickable(true);
+        }
     }
 
     //set the state of the information bar (By Alex Montes)
@@ -802,49 +861,83 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMapsAlert.show();
     }
 
+    //Function that shows a locations pictures (By Alex Montes)
+    /*
+      This function is causing the app to do heavy processing and is currently not efficient as
+      its causing the running program to skip 128 frames (130 if the less efficient search method
+      is used). Use of java.util.concurrent may need to be implemented somewhere
+     */
     public void showLocationPictures() {
         LinearLayout linearLayout = findViewById(R.id.locationImages);
         String infoBarText = "";
         int imageID = 0; //holds image file ID
+        int found = -1; //picture not found by default
+        int count = 0;
 
         //following three lines gets rid of white spaces, special chars, and turns to lower case of the info bar text
         infoBarText = informationBarLocationName.getText().toString().replaceAll("\\s", "");
         infoBarText = infoBarText.replaceAll("[-.'&/]", "");
         infoBarText = infoBarText.toLowerCase();
 
+        String finalInfoBarText = infoBarText; //needed to use stream()
+        List<String> matchingElements = null; //empty list
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) { //if user version is API24 or higher
+            //use more efficient search
+            //search through the locationPictures arrayList and fill an empty arraylist with all the matching photo names
+            matchingElements = locationPictures.stream().filter(str -> str.trim().contains(finalInfoBarText)).collect(Collectors.toList());
 
-        for(String campusLocation : locationPictures) //go through all pictures
-        {
-            if(campusLocation.contains(infoBarText)) //if picture name matches location name
-            {
-
+            //while not at the end of matching pictures list
+            while (matchingElements.size() > count) {
+                //set up the parameters of the imageView
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT,
                         1.0f);
-                param.setMargins(40, 0, 40, 200);
-                imageID = getImage(campusLocation); //get id of the resource from the drawable folder
-                ImageView imageView = new ImageView(MapsActivity.this);
-                imageView.setLayoutParams(param);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                param.setMargins(40, 0, 40, 200); //set spacing between pics
+                imageID = getImage(matchingElements.get(count)); //get id of the resource from the drawable folder
+                ImageView imageView = new ImageView(MapsActivity.this); //create imageView
+                imageView.setLayoutParams(param); //set up parameters
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY); //fit the imageView in parent
 
                 //getDrawable() is deprecated and needs this
                 @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = getResources().getDrawable(imageID);
                 imageView.setImageDrawable(drawable);
                 linearLayout.addView(imageView);
+                count++;
+            }
+        }
+        else {
+            for (String campusLocation : locationPictures) //go through all pictures
+            {
+                if (campusLocation.contains(infoBarText)) //if picture name matches location name
+                {
+                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT,
+                            1.0f);
+                    param.setMargins(40, 0, 40, 200);
+                    imageID = getImage(campusLocation); //get id of the resource from the drawable folder
+                    ImageView imageView = new ImageView(MapsActivity.this);
+                    imageView.setLayoutParams(param);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    //getDrawable() is deprecated and needs this
+                    @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = getResources().getDrawable(imageID);
+                    imageView.setImageDrawable(drawable);
+                    linearLayout.addView(imageView);
+                }
             }
         }
 
 
-        //campusPictures.setImageDrawable(drawable); //set the image of the imageView
+
     }
 
-    //function that looks for a specified resource in the drawable's folder
+    //function that looks for a specified resource in the drawable's folder (By Alex Montes)
     private int getImage(String imageName){
         //holds the id of the resource
         int drawableResourceID = this.getResources().getIdentifier(imageName, "drawable", this.getPackageName());
 
         return drawableResourceID;
     }
+
 
     //the bottom commented code were plans to get campus pictures from an online URL. Left for future work
     /*
