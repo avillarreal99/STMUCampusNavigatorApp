@@ -56,7 +56,7 @@ Assumption Chapel,29.45294,-98.56194,NULL,Sacred
 Guadalupe Chapel,29.45459,-98.56281,2104363545,Sacred
 Marianist Chapel,29.45459,-98.56116,NULL,Sacred
 Marianist Cemetery,29.45432,-98.56116,NULL,Sacred
-Casa Maria Marianist Residence,29.45063,-98.56339,NULL,Sacred
+Casa Maria,29.45063,-98.56339,NULL,Sacred
 Marianist Residence,29.45472,-98.56144,2104363245,Sacred
 University Ministry,29.45355,-98.56315,2104363213,Sacred
 Albert B. Alkek Business Building,29.45278,-98.56364,NULL,Academics

@@ -897,9 +897,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         infoBarText = informationBarLocationName.getText().toString().replaceAll("\\s", "");
         infoBarText = infoBarText.replaceAll("[-.'&/()]", "");
         infoBarText = infoBarText.toLowerCase();
-        System.out.println(infoBarText);
 
         String finalInfoBarText = infoBarText; //needed to use stream()
+        System.out.println(finalInfoBarText);
         List<String> matchingElements = null; //empty list
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) { //if user version is API24 or higher
