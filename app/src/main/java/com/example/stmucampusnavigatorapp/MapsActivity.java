@@ -47,8 +47,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 import com.example.stmucampusnavigatorapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -350,6 +348,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(pictureScroll.getVisibility()==View.VISIBLE)
                 {
                     pictureScroll.setVisibility(View.GONE);
+                    LinearLayout linearLayout = findViewById(R.id.locationImages);
+                    linearLayout.removeAllViews();
                     showButtons(findViewById(R.id.mapMode), findViewById(R.id.recenterButton));
                 }
             }
@@ -483,9 +483,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         HorizontalScrollView pictureScroll = findViewById(R.id.PictureScroll);
         setInfoBarState("collapse"); //hide info bar
         stmuMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stMarysUniversity, 15f));
+        hideKeyboard();
 
         if(pictureScroll.getVisibility()==View.VISIBLE)
         {
+            LinearLayout linearLayout = findViewById(R.id.locationImages);
+            linearLayout.removeAllViews();
             pictureScroll.setVisibility(View.GONE);
             showButtons(findViewById(R.id.mapMode), findViewById(R.id.recenterButton));
         }
@@ -552,9 +555,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             public void onClick(View v)
             {
+                hideKeyboard();
                 if(pictureScroll.getVisibility()==View.VISIBLE)
                 {
                     pictureScroll.setVisibility(View.GONE);
+                    LinearLayout linearLayout = findViewById(R.id.locationImages);
+                    linearLayout.removeAllViews();
                     showButtons((Button) findViewById(R.id.mapMode), (Button) findViewById(R.id.recenterButton));
                 }
 
@@ -591,6 +597,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker)
             {
+                HorizontalScrollView pictureScroll = findViewById(R.id.PictureScroll);
+
+                if(pictureScroll.getVisibility()==View.VISIBLE)
+                {
+                    pictureScroll.setVisibility(View.GONE);
+                    showButtons((Button) findViewById(R.id.mapMode), (Button) findViewById(R.id.recenterButton));
+                }
+
+                LinearLayout linearLayout = findViewById(R.id.locationImages);
+                linearLayout.removeAllViews();
+
                 selectedLocationName = marker.getTitle();
 
                 // if the COVID testing kiosk is selected
@@ -757,6 +774,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     pictureScroll.setClickable(true);
                     hideButtons(mapModeBttn, recenterBttn);
                     showLocationPictures();
+                    pictureBttn.setPressed(true);
                 }
                 else // makes it go back to invisible when clicked again
                 {
@@ -765,6 +783,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     pictureScroll.setVisibility(View.GONE);
                     pictureScroll.setClickable(false);
                     showButtons(mapModeBttn, recenterBttn);
+                    pictureBttn.setPressed(false);
                 }
             }
         });
@@ -876,8 +895,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //following three lines gets rid of white spaces, special chars, and turns to lower case of the info bar text
         infoBarText = informationBarLocationName.getText().toString().replaceAll("\\s", "");
-        infoBarText = infoBarText.replaceAll("[-.'&/]", "");
+        infoBarText = infoBarText.replaceAll("[-.'&/()]", "");
         infoBarText = infoBarText.toLowerCase();
+        System.out.println(infoBarText);
 
         String finalInfoBarText = infoBarText; //needed to use stream()
         List<String> matchingElements = null; //empty list
