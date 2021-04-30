@@ -1,10 +1,11 @@
+// StMU Campus Navigator
 // DataParser.java
-// Created by Vishal (Github
+// Created by Vishal on 10/20/2018
 // Implemented by Amanda Villarreal
 // Class #3 for obtaining URL to create polylines
+// --------------------------------------------------------------------------------------------
 
 package com.example.stmucampusnavigatorapp;
-
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,15 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Vishal on 10/20/2018.
- */
-
 public class DataParser
 {
     public List<List<HashMap<String, String>>> parse(JSONObject jObject)
     {
-
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;

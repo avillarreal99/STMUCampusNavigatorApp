@@ -1,10 +1,11 @@
+// StMU Campus Navigator
 // PointsParser.java
-// Created by Vishal (Github)
+// Created by Vishal on 10/20/2018
 // Implemented by Amanda Villarreal
 // Class #2 for obtaining URL to create polylines
+// -----------------------------------------------------------------------------------------------
 
 package com.example.stmucampusnavigatorapp;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -15,10 +16,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-/**
- * Created by Vishal on 10/20/2018.
- */
 
 public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>>
 {

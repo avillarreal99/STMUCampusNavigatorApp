@@ -1,10 +1,11 @@
+// StMU Campus Navigator
 // FetchURL.java
-// Created by Vishal (Github)
+// Created by Vishal 10/20/2018
 // Implemented by Amanda Villarreal
 // Class #1 for obtaining URL to create polylines
+// ---------------------------------------------------------------------------------------------------------
 
 package com.example.stmucampusnavigatorapp;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,10 +15,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-/**
- * Created by Vishal on 10/20/2018.
- */
 
 public class FetchURL extends AsyncTask<String, Void, String>
 {

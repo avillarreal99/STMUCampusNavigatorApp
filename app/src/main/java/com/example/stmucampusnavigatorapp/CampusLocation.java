@@ -1,6 +1,9 @@
+// StMU Campus Navigator
 // CampusLocation.java
 // By Darren Griffin
+// Feb 2021
 // Class for holding the data of each campus location
+// ----------------------------------------------------------------------------------------------
 
 package com.example.stmucampusnavigatorapp;
 
@@ -14,7 +17,6 @@ public class CampusLocation
     private String latitude;
     private String category;
     private String phoneNumber; // 0 or NULL (No phone number available)
-    private List pictures;
 
     public CampusLocation(String locationName, String latitudeCoord, String longitudeCoord, String locationPhoneNum, String  locationCategory)
     {
@@ -53,7 +55,3 @@ public class CampusLocation
         return this.getLocationName() + " " + this.getLongitude() + " " + this.getLatitude() + " " + this.getPhoneNumber() + " " + this.getCategory();
     }
 }
-
-
-
-
